@@ -4,7 +4,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductCategoryController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+/*
+|--------------------------------------------------------------------------
+| Home Page Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::view('/', 'layouts.welcome');
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +22,6 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 // Halaman Register dan Login
 Route::view('/login', 'authentication.login');
-Route::view('/', 'welcome');
 Route::view('/register', 'authentication.register');
 
 // Proses Registrasi dan Login
@@ -55,15 +62,6 @@ Route::post('/email/verification-notification', function () {
     return back()->with('success', 'Verification link sent!');
 })->middleware(['auth:company', 'throttle:6,1'])->name('verification.send');
 
-/*
-|--------------------------------------------------------------------------
-| Dashboard Routes (Protected)
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware(['auth:company', 'verified'])->group(function () {
-    Route::view('/dashboard', 'dashboard.dashboard');
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -76,14 +74,35 @@ Route::post('/forgot-password', [CompanyController::class, 'sendResetLinkEmail']
 Route::get('/reset-password/{token}', [CompanyController::class, 'showResetForm'])->name('password.reset');
 Route::post('/update-password', [CompanyController::class, 'reset'])->name('password.update');
 
+
+
+Route::middleware(['auth:company', 'verified'])->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Dashboard Routes (Protected)
+|--------------------------------------------------------------------------
+*/
+
+    Route::view('/dashboard', 'dashboard.dashboard');
+
 /*
 |--------------------------------------------------------------------------
 | Profile Routes
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth:company', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+
+/*
+|--------------------------------------------------------------------------
+| Product Category Routes
+|--------------------------------------------------------------------------
+*/
+
+    Route::resource('categories', ProductCategoryController::class);
 });
+
+
