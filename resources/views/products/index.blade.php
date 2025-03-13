@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Product Categories')
+@section('title', 'Products')
 
 @section('content')
     <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">
@@ -11,8 +11,8 @@
         @endif
         <div class="flex justify-between mb-6 gap-2">
             <!-- Search and Sorting -->
-            <form method="GET" action="{{ route('categories.index') }}" class="flex gap-2 flex-wrap">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search categories..."
+            <form method="GET" action="{{ route('products.index') }}" class="flex gap-2 flex-wrap">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..."
                     class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
                 <div class="relative w-38">
@@ -35,32 +35,40 @@
             </form>
 
             <!-- Add Category -->
-            <a href="{{ route('categories.create') }}"
+            <a href="{{ route('products.create') }}"
                 class="bg-indigo-600 text-white px-5 py-2 h-[40px] flex items-center rounded-lg hover:bg-indigo-700 transition gap-2">
                 Add
             </a>
         </div>
 
+        <!-- Responsive Table -->
         <div class="overflow-x-auto">
             <table class="w-full bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
                 <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
                     <tr>
                         <th class="px-4 py-3 text-left">No</th>
-                        <th class="px-4 py-3 text-left">Category Name</th>
+                        <th class="px-4 py-3 text-left">Product Name</th>
+                        <th class="px-4 py-3 text-left">Category</th>
                         <th class="px-4 py-3 text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $category)
+                    @foreach ($products as $product)
                         <tr class="border-b hover:bg-gray-50 transition">
                             <td class="px-4 py-3">
-                                {{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}</td>
-                            <td class="px-4 py-3">{{ $category->name }}</td>
+                                {{ ($products->currentPage() - 1) * $products->perPage() + $loop->iteration }}</td>
+                            <td class="px-4 py-3">
+                                <a href="{{ route('products.show', $product->id) }}"
+                                    class="text-indigo-600 hover:underline">
+                                    {{ $product->name }}
+                                </a>
+                            </td>
+                            <td class="px-4 py-3">{{ $product->product_category->name ?? 'No Category' }}</td>
                             <td class="px-4 py-3 text-center space-x-3">
-                                <a href="{{ route('categories.edit', $category->id) }}"
+                                <a href="{{ route('products.edit', $product->id) }}"
                                     class="text-blue-500 hover:text-blue-700 transition font-medium">Edit</a>
                                 <button type="button"
-                                    onclick="confirmDeleteCategory(event, '{{ route('categories.destroy', $category->id) }}')"
+                                    onclick="confirmDeleteProduct(event, '{{ route('products.destroy', $product->id) }}')"
                                     class="text-red-500 hover:text-red-700 transition font-medium">
                                     Delete
                                 </button>
@@ -73,16 +81,16 @@
 
         <!-- Pagination -->
         <div class="mt-4">
-            {{ $categories->appends(request()->query())->links('pagination::tailwind') }}
+            {{ $products->appends(request()->query())->links('pagination::tailwind') }}
         </div>
     </div>
 
     <script>
-        function confirmDeleteCategory(event, deleteUrl) {
+        function confirmDeleteProduct(event, deleteUrl) {
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this category!",
+                text: "Once deleted, you will not be able to recover this product!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",

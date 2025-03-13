@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductCategoryController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -103,6 +104,15 @@ Route::middleware(['auth:company', 'verified'])->group(function () {
 */
 
     Route::resource('categories', ProductCategoryController::class);
+
+/*
+|--------------------------------------------------------------------------
+| Product Category Routes
+|--------------------------------------------------------------------------
+*/
+
+    Route::resource('products', ProductController::class);
+
 });
 
 
