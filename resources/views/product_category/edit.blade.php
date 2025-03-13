@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Category')
+
 @section('content')
     <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">
-        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Edit Category</h2>
+        
 
         @if ($errors->any())
             <div class="bg-red-500 text-white p-3 rounded-md mb-4">
