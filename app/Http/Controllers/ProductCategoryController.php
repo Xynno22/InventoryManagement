@@ -8,20 +8,27 @@ use App\Models\ProductCategory;
 class ProductCategoryController extends Controller
 {
     // Menampilkan semua kategori
-    public function index()
+    public function index(Request $request)
     {
-        $categories = ProductCategory::where('company_id', auth('company')->id())->paginate(10);
+
+        $query = ProductCategory::where('company_id', auth('company')->id());
+
+        // Filtering by search
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Sorting
+        if ($request->has('sort') && in_array($request->sort, ['asc', 'desc'])) {
+            $query->orderBy('name', $request->sort);
+        }
+
+        $categories = $query->paginate(10); // Pastikan hanya panggil paginate() di akhir.
+    
         return view('product_category.index', compact('categories'));
     }
 
-    // Menampilkan form tambah kategori
-    // public function view()
-    // {
-    //     $categories = ProductCategory::all();
-    //     return view('categories.index', ['categories' => $categories]);
-    // }
-
-    // Menyimpan kategori baru
+  
     public function create()
     {
         return view('product_category.add');
