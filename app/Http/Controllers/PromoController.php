@@ -34,6 +34,7 @@ class PromoController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
+            'end_date' => 'required|date|after:today',
             'type' => 'required|in:percentage,"fixed amount"',
             'fixedamount' => 'nullable|numeric|min:0',
             'percentageamount' => 'nullable|numeric|min:0',
@@ -56,6 +57,7 @@ class PromoController extends Controller
 
         Promo::create([
             'name' => $request->name,
+            'end_date' => $request->end_date,
             'promo_type_id' => $promoType->id,
             'amount' => $amount,
         ]);
@@ -89,6 +91,7 @@ class PromoController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
+            'end_date' => 'required|date|after:today',
             'type' => 'required|in:percentage,"fixed amount"',
             'fixedamount' => 'nullable|numeric|min:0',
             'percentageamount' => 'nullable|numeric|min:0',
@@ -113,6 +116,7 @@ class PromoController extends Controller
         $promo->update([
             'name' => $request->name,
             'promo_type_id' => $promoType->id,
+            'end_date' => $request->end_date,
             'amount' => $amount,
         ]);
 

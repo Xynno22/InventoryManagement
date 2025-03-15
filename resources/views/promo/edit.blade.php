@@ -4,23 +4,6 @@
     <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">
         <h2 class="text-2xl font-semibold text-gray-700 mb-4">Edit Promo</h2>
 
-        <div class="mb-4 p-4 bg-gray-100 rounded-md">
-            <h3 class="text-lg font-semibold">Promo Details</h3>
-            <ul class="list-disc list-inside text-gray-700">
-                                {{ $promo->promoType->name}}
-                                {{ $promo->amount}}
-                {{-- @foreach($promo->getAttributes() as $key => $value) --}}
-                {{--     <li> --}}
-                {{--         <strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> --}}
-                {{--         @if($key === 'promo_type_id') --}}
-                {{--             {{ $promo->promoType ? $promo->promoType->name : 'N/A' }} --}}
-                {{--         @else --}}
-                {{--             {{ $value }} --}}
-                {{--         @endif --}}
-                {{--     </li> --}}
-                {{-- @endforeach --}}
-            </ul>
-        </div>
         @if ($errors->any())
             <div class="bg-red-500 text-white p-3 rounded-md mb-4">
                 <ul>
@@ -39,10 +22,24 @@
                 <label for="name" class="block text-gray-700 font-medium mb-2">Promo Name</label>
                 <input type="text"
                        name="name" placeholder='Promo Name'
-                                   value="{{ old('name', $promo->name) }}"
-                                   class="w-full px-4 py-2 border border-gray-600 rounded-md">
+                       value="{{ old('name', $promo->name) }}"
+                       class="w-full px-4 py-2 border border-gray-600 rounded-md">
             </div>
 
+            <div class="mb-6">
+                <label for="end_date" class="block text-gray-800 font-semibold mb-2">
+                    End Date
+                </label>
+                <input
+                        type="datetime-local"
+                        name="end_date"
+                        id="end_date"
+                        placeholder="Select end date & time"
+                        class="w-full px-4 py-2 border border-gray-600 rounded-lg shadow-sm"
+                        onfocus="this.showPicker()"
+                        value="{{ old('end_date', \Carbon\Carbon::parse($promo->end_date)->format('Y-m-d\TH:i')) }}"
+                        />
+            </div>
             <div class="mb-4">
                 <label for="type" class="block text-gray-700 font-medium mb-2">Promo Type</label>
                 <select class="w-full p-2 border border-black rounded-md" name="type" id="type">

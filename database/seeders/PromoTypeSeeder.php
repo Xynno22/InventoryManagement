@@ -14,8 +14,8 @@ class PromoTypeSeeder extends Seeder
     public function run(): void
     {
         $promoTypes = [
-            ['name' => 'Percentage'],
-            ['name' => 'Fixed Amount'],
+            ['name' => 'percentage'],
+            ['name' => 'fixed amount'],
         ];
 
         PromoType::insert($promoTypes);

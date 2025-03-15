@@ -22,6 +22,21 @@
                                    class="w-full px-4 py-2 border border-gray-600 rounded-md ">
             </div>
 
+
+            <div class="mb-6">
+                <label for="end_date" class="block text-gray-800 font-semibold mb-2">
+                    End Date
+                </label>
+                <input
+                        type="datetime-local"
+                        name="end_date"
+                        id="end_date"
+                        placeholder="Select end date & time"
+                        class="w-full px-4 py-2 border border-gray-600 rounded-lg shadow-sm"
+                        onfocus="this.showPicker()"
+                />
+            </div>
+
             <div class="mb-4">
                 <label for="type" class="block text-gray-700 font-medium mb-2">Promo Type</label>
                 <select class="w-full p-2 border border-black rounded-md" name="type" id="type">

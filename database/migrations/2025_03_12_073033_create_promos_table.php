@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('promo_type_id')
                 ->references('id')->on('promo_types')
                 ->onDelete('cascade');
+            $table->timestamp('end_date')->nullable();
             $table->decimal('amount', 10, 2);
             $table->timestamps();
         });
