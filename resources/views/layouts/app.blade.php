@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard')</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Tambahkan SweetAlert -->
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@yield('title', 'Dashboard')</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Tambahkan SweetAlert -->
+    </head>
 
 <body class="bg-gray-100">
     <div x-data="{ open: true }" class="flex h-screen">
@@ -74,27 +74,38 @@
                         <div x-show="openDocs" class="ml-6 space-y-2">
                             <a href="/categories" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M4 4h6v6H4zM4 14h6v6H4zM14 4h6v6h-6zM14 14h6v6h-6z" />
+                                                                 d="M4 4h6v6H4zM4 14h6v6H4zM14 4h6v6h-6zM14 14h6v6h-6z" />
                                 </svg>
                                 <span
-                                    :class="open ? 'block' :
-                                        'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                        :class="open ? 'block' :
+                                                'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
                                     Category
                                 </span>
                             </a>
                             <a href="/products" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M3 7l9-4 9 4v10l-9 4-9-4V7z" />
+                                                                 d="M3 7l9-4 9 4v10l-9 4-9-4V7z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9 5 9-5" />
                                 </svg>
                                 <span
-                                    :class="open ? 'block' :
-                                        'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                        :class="open ? 'block' :
+                                                'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
                                     Product
+                                </span>
+                            </a>
+                            <a href="/promo" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
+                                <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
+                                                                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.99 14.993 6-6m6 3.001c0 1.268-.63 2.39-1.593 3.069a3.746 3.746 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043 3.745 3.745 0 0 1-3.068 1.593c-1.268 0-2.39-.63-3.068-1.593a3.745 3.745 0 0 1-3.296-1.043 3.746 3.746 0 0 1-1.043-3.297 3.746 3.746 0 0 1-1.593-3.068c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 0 1 1.043-3.297 3.745 3.745 0 0 1 3.296-1.042 3.745 3.745 0 0 1 3.068-1.594c1.268 0 2.39.63 3.068 1.593a3.745 3.745 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.297 3.746 3.746 0 0 1 1.593 3.068ZM9.74 9.743h.008v.007H9.74v-.007Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                </svg>
+                                <span
+                                        :class="open ? 'block' :
+                                                'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                    Promo
                                 </span>
                             </a>
                         </div>
@@ -105,16 +116,16 @@
             <div class="border-t border-gray-700">
                 <!-- Profile -->
                 <a href="{{ route('profile.index') }}"
-                    class="relative flex items-center px-4 py-2 hover:bg-gray-700 group">
+                   class="relative flex items-center px-4 py-2 hover:bg-gray-700 group">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
+                                                                                            xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z">
+                                                     d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z">
                         </path>
                     </svg>
                     <span
-                        :class="open ? 'ml-2' :
-                            'hidden group-hover:block absolute left-full ml-2 bg-gray-800 px-2 py-1 rounded text-sm text-white'">
+                            :class="open ? 'ml-2' :
+                                    'hidden group-hover:block absolute left-full ml-2 bg-gray-800 px-2 py-1 rounded text-sm text-white'">
                         Profile
                     </span>
                 </a>

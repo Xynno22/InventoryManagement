@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\PromoController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
 |--------------------------------------------------------------------------
@@ -106,3 +107,9 @@ Route::middleware(['auth:company', 'verified'])->group(function () {
 });
 
 
+/*
+|--------------------------------------------------------------------------
+| Promo & Discount Routes
+|--------------------------------------------------------------------------
+*/
+Route::resource('promo', PromoController::class);

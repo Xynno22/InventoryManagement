@@ -62,7 +62,7 @@ class ProductCategoryController extends Controller
     public function destroy($id)
     {
         $category = ProductCategory::where('id', $id)
-                ->where('company_id', auth('company')->id()) 
+                ->where('company_id', auth('company')->id())
                 // Ensures the category belongs to the logged-in company
                 ->firstOrFail();
         $category->delete();

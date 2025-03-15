@@ -47,7 +47,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-6">
+    <footer class="bg-gray-800 fixed bottom-0 w-full text-white text-center py-6">
         <p>&copy; 2025 StockSense - All Rights Reserved</p>
     </footer>
 
