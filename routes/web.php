@@ -23,7 +23,7 @@ Route::view('/', 'layouts.welcome');
 */
 
 // Halaman Register dan Login
-Route::view('/login', 'authentication.login');
+Route::view('/login', 'authentication.login')->name('login');
 Route::view('/register', 'authentication.register');
 
 // Proses Registrasi dan Login
@@ -114,12 +114,12 @@ Route::middleware(['auth:company', 'verified'])->group(function () {
 
     Route::resource('products', ProductController::class);
 
-});
-
-
 /*
 |--------------------------------------------------------------------------
 | Promo & Discount Routes
 |--------------------------------------------------------------------------
 */
-Route::resource('promo', PromoController::class);
+    Route::resource('promo', PromoController::class);
+});
+
+

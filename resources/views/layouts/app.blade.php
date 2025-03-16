@@ -34,7 +34,7 @@
                     </button>
                 </div>
                 <nav class="mt-4">
-                    <a href="/dashboard" class="flex items-center px-4 py-3 hover:bg-gray-700 group">
+                    <a href="/dashboard" class="flex items-center px-4 py-3 hover:bg-gray-700 group {{ Request::is('dashboard') ? 'bg-gray-700' : '' }}">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 9.75L12 3l9 6.75V21H3V9.75z">
@@ -48,7 +48,7 @@
                     </a>
 
                     <!-- Documents Menu -->
-                    <div x-data="{ openDocs: false }">
+                    <div x-data="{ openDocs: {{ Request::is('categories*', 'products*', 'promo*') ? 'true' : 'false' }} }">
                         <button @click="openDocs = !openDocs"
                             class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
                             <div class="flex items-center">
@@ -72,7 +72,7 @@
 
                         <!-- Submenu -->
                         <div x-show="openDocs" class="ml-6 space-y-2">
-                            <a href="/categories" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
+                            <a href="/categories" class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('categories*') ? 'bg-gray-700' : '' }}">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
                                                                                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -84,7 +84,7 @@
                                     Category
                                 </span>
                             </a>
-                            <a href="/products" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
+                            <a href="/products" class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('products*') ? 'bg-gray-700' : '' }}">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
                                                                                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -97,7 +97,7 @@
                                     Product
                                 </span>
                             </a>
-                            <a href="/promo" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
+                            <a href="/promo" class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('promo*') ? 'bg-gray-700' : '' }}">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
                                                                                      viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.99 14.993 6-6m6 3.001c0 1.268-.63 2.39-1.593 3.069a3.746 3.746 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043 3.745 3.745 0 0 1-3.068 1.593c-1.268 0-2.39-.63-3.068-1.593a3.745 3.745 0 0 1-3.296-1.043 3.746 3.746 0 0 1-1.043-3.297 3.746 3.746 0 0 1-1.593-3.068c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 0 1 1.043-3.297 3.745 3.745 0 0 1 3.296-1.042 3.745 3.745 0 0 1 3.068-1.594c1.268 0 2.39.63 3.068 1.593a3.745 3.745 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.297 3.746 3.746 0 0 1 1.593 3.068ZM9.74 9.743h.008v.007H9.74v-.007Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />

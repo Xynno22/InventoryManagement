@@ -20,7 +20,33 @@
 
 @section('content')
     <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">
-        <div class="flex justify-end mb-6">
+
+        <div class="flex justify-between mb-6 items-center">
+
+            <!-- Search and Sorting -->
+            <form method="GET" action="{{ route('promo.index') }}" class="flex gap-2 flex-wrap">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search promo..."
+                    class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+
+                <div class="relative w-38">
+                    <select name="sort" id="sort" onchange="this.form.submit()"
+                        class="appearance-none w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium text-[15px] focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">
+                        <option value="" disabled>Sort by</option>
+                        <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>A - Z</option>
+                        <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Z - A</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                        <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+
+            </form>
+
             <a href="{{ route('promo.create')}}"
                class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
                 Add Promo

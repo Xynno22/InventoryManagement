@@ -1,18 +1,9 @@
 @extends('layouts.app')
+@section('title', 'Edit Promo')
 
 @section('content')
     <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">
         <h2 class="text-2xl font-semibold text-gray-700 mb-4">Edit Promo</h2>
-
-        @if ($errors->any())
-            <div class="bg-red-500 text-white p-3 rounded-md mb-4">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         <form action="{{ route('promo.update', $promo->id) }}" method="POST">
             @csrf
@@ -24,6 +15,9 @@
                        name="name" placeholder='Promo Name'
                        value="{{ old('name', $promo->name) }}"
                        class="w-full px-4 py-2 border border-gray-600 rounded-md">
+                @error('name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mb-6">
@@ -39,6 +33,9 @@
                         onfocus="this.showPicker()"
                         value="{{ old('end_date', \Carbon\Carbon::parse($promo->end_date)->format('Y-m-d\TH:i')) }}"
                         />
+                @error('end_date')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
             <div class="mb-4">
                 <label for="type" class="block text-gray-700 font-medium mb-2">Promo Type</label>
@@ -52,6 +49,9 @@
                         </option>
                     @endforeach
                 </select>
+                @error('type')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- Amount for Percentage Type --}}
@@ -65,21 +65,35 @@
                                        class="w-20 px-4 text-center py-2 border border-gray-300">
                                        <h1 class="bg-gray-50 px-4 py-2">%</h1>
                 </div>
+                @error('amount')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+                @error('percentageamount')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- Amount for Fixed Amount Type --}}
             <div class="mb-4 {{ strtolower($promo->promoType->name) == 'fixed amount' ? '' : 'hidden' }}" id="inputAmount">
                 <label for="fixedamount" class="block text-gray-700 font-medium">Fixed Amount</label>
-                <small class="italic text-red-500">Diisi tanpa titik. Cth: 50000</small>
+                <small class="italic text-gray-400">Diisi tanpa titik. Cth: 50000</small>
                 <div class="flex items-center mt-2">
                     <h1 class="bg-gray-50 px-4 py-2">Rp.</h1>
                     <div class="w-full">
-                        <input type="text" name="fixedamount" id="fixedamount"
-                                                              placeholder="Input the amount"
-                                                              value="{{ old('fixedamount', strtolower($promo->promoType->name) == 'fixed amount' ? intval($promo->amount) : '') }}"
-                                                              class="w-full px-4 py-2 border border-gray-300">
+                        <input type="text"
+                               name="fixedamount"
+                               id="fixedamount"
+                               placeholder="Input the amount"
+                               value="{{ old('fixedamount', strtolower($promo->promoType->name) == 'fixed amount' ? intval($promo->amount) : '') }}"
+                               class="w-full px-4 py-2 border border-gray-300">
                     </div>
                 </div>
+                @error('amount')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+                @error('fixedamount')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
 
@@ -96,28 +110,34 @@
     </div>
 
     <script>
-        document.getElementById("type").addEventListener("change", function () {
-            const inputAmount = document.getElementById("inputAmount");
-            const inputPercentage = document.getElementById("inputPercentage");
+        document.addEventListener("DOMContentLoaded", function () {
+            const promoTypeSelect = document.getElementById("type");
+            const percentageInput = document.getElementById("percentageamount");
+            const fixedAmountInput = document.getElementById("fixedamount");
+            const inputPercentageDiv = document.getElementById("inputPercentage");
+            const inputAmountDiv = document.getElementById("inputAmount");
 
-            const selectedType = this.value.toLowerCase();
+            function toggleInputFields() {
+                const selectedType = promoTypeSelect.value.toLowerCase();
 
-            if (selectedType.includes("percentage")) {
-                inputPercentage.classList.remove("hidden");
-                inputAmount.classList.add("hidden");
-            } else if (selectedType.includes("amount")) {
-                inputAmount.classList.remove("hidden");
-                inputPercentage.classList.add("hidden");
-            } else {
-                inputAmount.classList.add("hidden");
-                inputPercentage.classList.add("hidden");
+                if (selectedType.includes("percentage")) {
+                    inputPercentageDiv.classList.remove("hidden");
+                    inputAmountDiv.classList.add("hidden");
+                    fixedAmountInput.value = ""; // Hapus nilai input fixed amount
+                } else if (selectedType.includes("amount")) {
+                    inputPercentageDiv.classList.add("hidden");
+                    inputAmountDiv.classList.remove("hidden");
+                    percentageInput.value = ""; // Hapus nilai input percentage
+                } else {
+                    inputPercentageDiv.classList.add("hidden");
+                    inputAmountDiv.classList.add("hidden");
+                    percentageInput.value = "";
+                    fixedAmountInput.value = "";
+                }
             }
-        });
 
-        // Jalankan saat halaman pertama kali dimuat
-        window.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("type").dispatchEvent(new Event("change"));
+            promoTypeSelect.addEventListener("change", toggleInputFields);
+            toggleInputFields(); // Panggil saat halaman dimuat untuk mengatur default
         });
-
     </script>
 @endsection

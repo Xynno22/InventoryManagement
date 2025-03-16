@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CompanySeeder::class, // Menjalankan seeder untuk akun perusahaan
             PromoTypeSeeder::class, // Menjalankan seeder untuk promo types
-            PromoSeeder::class, // Menjalankan seeder untuk promo types
+            // PromoSeeder::class, // Menjalankan seeder untuk promo types
         ]);
     }
 }
