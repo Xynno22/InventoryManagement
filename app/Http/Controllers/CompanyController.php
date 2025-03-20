@@ -73,7 +73,23 @@ class CompanyController extends Controller
             'message' => 'Invalid email or password.',
         ], 401);
     }
+    public function loginUser(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:8',
+        ]);
 
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('web')->attempt($credentials)) {
+            return redirect('/dashboard')->with('status', 'Anda Berhasil Login.');
+        }
+        
+        return response()->json([
+            'message' => 'Invalid email or password.',
+        ], 401);
+    }
     public function destroy(Request $request)
     {
         $company = auth('company')->user(); // Ambil data company yang sedang login
