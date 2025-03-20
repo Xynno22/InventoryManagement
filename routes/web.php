@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckRolePermissions;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\PromoController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
 |--------------------------------------------------------------------------
@@ -111,7 +112,12 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
 */
 
     Route::resource('products', ProductController::class);
-
+/*
+|--------------------------------------------------------------------------
+| Promo & Discount Routes
+|--------------------------------------------------------------------------
+*/
+Route::resource('promo', PromoController::class);
 });
 
 
