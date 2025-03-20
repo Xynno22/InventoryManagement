@@ -28,7 +28,7 @@
 
     <div class="w-full max-w-md bg-cardLight text-textDark p-8 rounded-xl shadow-lg border border-borderLight">
         <div class="text-center">
-            <h2 class="text-2xl font-bold">Sign in to Your Account</h2>
+            <h2 class="text-2xl font-bold">Login as Co-Worker</h2>
             <p class="text-gray-600 text-sm mt-1">Enter your credentials to log in</p>
         </div>
 
@@ -46,17 +46,7 @@
             @endif
         </div>
 
-        <!-- Tabs untuk memilih login sebagai Company atau Co-Worker -->
-        <div class="flex justify-center space-x-4 mb-4">
-            <a href="{{ url('/login') }}" class="text-primary font-semibold hover:underline">
-                Login as Company
-            </a>
-            <a href="{{ url('/login-user') }}" class="text-primary font-semibold hover:underline">
-                Login as Co-Worker
-            </a>
-        </div>
-
-        <form class="mt-4 space-y-4" action="{{ url('/login-company') }}" method="POST">
+        <form class="mt-4 space-y-4" action="{{ url('/login-user') }}" method="POST">
             @csrf
 
             <div>
@@ -71,22 +61,12 @@
                     class="mt-1 block w-full rounded-md bg-white border border-borderLight px-3 py-2 text-gray-900 shadow-sm focus:border-primary focus:ring-primary">
             </div>
 
-            <div class="flex items-center justify-between">
-                <a href="{{ url('/forgot-password') }}" class="text-sm text-primary hover:underline">
-                    Forgot password?
-                </a>
-            </div>
 
             <button type="submit"
                 class="w-full bg-primary hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-md transition">
                 Sign in
             </button>
         </form>
-
-        <p class="mt-4 text-center text-sm text-gray-600">
-            Don't have an account? 
-            <a href="{{ url('/register') }}" class="text-primary hover:underline">Register here</a>
-        </p>
     </div>
 
 </body>

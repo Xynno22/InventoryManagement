@@ -6,12 +6,14 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     public function run()
     {
         $this->call([
             CompanySeeder::class, // Menjalankan seeder untuk akun perusahaan
+            PermissionSeeder::class, // Menjalankan seeder untuk akun perusahaan
         ]);
     }
 }

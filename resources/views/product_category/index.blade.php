@@ -35,10 +35,13 @@
             </form>
 
             <!-- Add Category -->
-            <a href="{{ route('categories.create') }}"
-                class="bg-indigo-600 text-white px-5 py-2 h-[40px] flex items-center rounded-lg hover:bg-indigo-700 transition gap-2">
-                Add
-            </a>
+            @if (Auth::guard('company')->check() == true || Auth::user()->can('create category'))
+                <a href="{{ route('categories.create') }}"
+                    class="bg-indigo-600 text-white px-5 py-2 h-[40px] flex items-center rounded-lg hover:bg-indigo-700 transition gap-2">
+                    Add
+                </a>
+            @endif
+
         </div>
 
         <div class="overflow-x-auto">
@@ -57,13 +60,17 @@
                                 {{ ($categories->currentPage() - 1) * $categories->perPage() + $loop->iteration }}</td>
                             <td class="px-4 py-3">{{ $category->name }}</td>
                             <td class="px-4 py-3 text-center space-x-3">
-                                <a href="{{ route('categories.edit', $category->id) }}"
-                                    class="text-blue-500 hover:text-blue-700 transition font-medium">Edit</a>
-                                <button type="button"
-                                    onclick="confirmDeleteCategory(event, '{{ route('categories.destroy', $category->id) }}')"
-                                    class="text-red-500 hover:text-red-700 transition font-medium">
-                                    Delete
-                                </button>
+                                @if (Auth::guard('company')->check() == true || Auth::user()->can('update category'))
+                                    <a href="{{ route('categories.edit', $category->id) }}"
+                                        class="text-blue-500 hover:text-blue-700 transition font-medium">Edit</a>
+                                @endif
+                                @if (Auth::guard('company')->check() == true || Auth::user()->can('delete category'))
+                                    <button type="button"
+                                        onclick="confirmDeleteCategory(event, '{{ route('categories.destroy', $category->id) }}')"
+                                        class="text-red-500 hover:text-red-700 transition font-medium">
+                                        Delete
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
