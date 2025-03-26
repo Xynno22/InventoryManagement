@@ -1,18 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Products')
+@section('title', 'Stock List')
 
 @section('content')
-    <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">
+    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">
         @if (session('success'))
             <div class="mb-4 px-4 py-3 bg-green-100 text-green-800 border border-green-300 rounded-lg">
                 {{ session('success') }}
             </div>
         @endif
+
         <div class="flex justify-between mb-6 gap-2">
-            <!-- Search and Sorting -->
-            <form method="GET" action="{{ route('products.index') }}" class="flex gap-2 flex-wrap">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..."
+            <!-- Search -->
+            <form method="GET" action="{{ route('stocks.index') }}" class="flex gap-2 flex-wrap">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search stocks..."
                     class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
                 <div class="relative w-38">
@@ -31,16 +32,8 @@
                         </svg>
                     </div>
                 </div>
-
             </form>
 
-            @if (Auth::guard('company')->check() == true || Auth::user()->can('create product'))
-                <!-- Add Category -->
-                <a href="{{ route('products.create') }}"
-                    class="bg-indigo-600 text-white px-5 py-2 h-[40px] flex items-center rounded-lg hover:bg-indigo-700 transition gap-2">
-                    Add
-                </a>
-            @endif
         </div>
 
         <!-- Responsive Table -->
@@ -50,34 +43,37 @@
                     <tr>
                         <th class="px-4 py-3 text-left">No</th>
                         <th class="px-4 py-3 text-left">Product Name</th>
-                        <th class="px-4 py-3 text-left">Category</th>
+                        <th class="px-4 py-3 text-left">Purchase Price</th>
+                        <th class="px-4 py-3 text-left">Sale Price</th>
+                        <th class="px-4 py-3 text-center">Current Stock</th>
+                        <th class="px-4 py-3 text-center">Minimum Stock</th>
+                        <th class="px-4 py-3 text-center">Last Updated</th>
+                        <th class="px-4 py-3 text-center">Total Sold</th>
                         <th class="px-4 py-3 text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($products as $product)
+                    @foreach ($stocks as $index => $stock)
                         <tr class="border-b hover:bg-gray-50 transition">
-                            <td class="px-4 py-3">
-                                {{ ($products->currentPage() - 1) * $products->perPage() + $loop->iteration }}</td>
-                            <td class="px-4 py-3">
-                                <a href="{{ route('products.show', $product->id) }}"
-                                    class="text-indigo-600 hover:underline">
-                                    {{ $product->name }}
-                                </a>
+                            <td class="px-4 py-3">{{ ($stocks->currentPage() - 1) * $stocks->perPage() + $loop->iteration }}
                             </td>
-                            <td class="px-4 py-3">{{ $product->product_category->name ?? 'No Category' }}</td>
+                            <td class="px-4 py-3">{{ $stock->product->name }}</td>
+                            <td class="px-4 py-3">{{ number_format($stock->product->purchase_price, 0, ',', '.') }}</td>
+                            <td class="px-4 py-3">{{ number_format($stock->product->sale_price, 0, ',', '.') }}</td>
+                            <td class="px-4 py-3 text-center">{{ $stock->currentStock }}</td>
+                            <td class="px-4 py-3 text-center">{{ $stock->minimumStock }}</td>
+                            <td class="px-4 py-3 text-center">
+                                {{ $stock->lastUpdated ? \Carbon\Carbon::parse($stock->lastUpdated)->setTimezone('Asia/Jakarta')->format('d-m-Y H:i') : '-' }}
+                            </td>
+                            <td class="px-4 py-3 text-center">{{ $stock->totalOrder }}</td>
                             <td class="px-4 py-3 text-center space-x-3">
-                                @if (Auth::guard('company')->check() == true || Auth::user()->can('update category'))
-                                    <a href="{{ route('products.edit', $product->id) }}"
-                                        class="text-blue-500 hover:text-blue-700 transition font-medium">Edit</a>
-                                @endif
-                                @if (Auth::guard('company')->check() == true || Auth::user()->can('delete category'))
-                                    <button type="button"
-                                        onclick="confirmDeleteProduct(event, '{{ route('products.destroy', $product->id) }}')"
-                                        class="text-red-500 hover:text-red-700 transition font-medium">
-                                        Delete
-                                    </button>
-                                @endif
+                                <a href="{{ route('stocks.edit', $stock->id) }}"
+                                    class="text-blue-500 hover:text-blue-700 transition font-medium">Edit</a>
+                                <button type="button"
+                                    onclick="confirmDeleteStock(event, '{{ route('stocks.destroy', $stock->id) }}')"
+                                    class="text-red-500 hover:text-red-700 transition font-medium">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -87,16 +83,16 @@
 
         <!-- Pagination -->
         <div class="mt-4">
-            {{ $products->appends(request()->query())->links('pagination::tailwind') }}
+            {{ $stocks->appends(request()->query())->links('pagination::tailwind') }}
         </div>
     </div>
 
     <script>
-        function confirmDeleteProduct(event, deleteUrl) {
+        function confirmDeleteStock(event, deleteUrl) {
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this product!",
+                text: "Once deleted, you will not be able to recover this stock!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",

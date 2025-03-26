@@ -2,9 +2,9 @@
 
 @section('title', 'Promo & Discount')
 
-@if(session('success'))
+@if (session('success'))
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             Swal.fire({
                 toast: true,
                 position: "top-end",
@@ -47,10 +47,13 @@
 
             </form>
 
-            <a href="{{ route('promo.create')}}"
-               class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
-                Add Promo
-            </a>
+            @if (Auth::guard('company')->check() == true || Auth::user()->can('create promo'))
+                <a href="{{ route('promo.create') }}"
+                    class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
+                    Add Promo
+                </a>
+            @endif
+
         </div>
 
         <div class="overflow-x-auto">
@@ -68,14 +71,16 @@
                 <tbody>
                     @if ($promos->isEmpty())
                         <tr>
-                            <td colspan="6" class="text-center text-red-500 uppercase italic font-bold py-4 text-gray-500">
+                            <td colspan="6"
+                                class="text-center text-red-500 uppercase italic font-bold py-4 text-gray-500">
                                 No promos available.
                             </td>
                         </tr>
                     @else
                         @foreach ($promos as $promo)
                             <tr class="border-b hover:bg-gray-50 transition">
-                                <td class="px-4 py-3">{{ ($promos->currentPage() - 1) * $promos->perPage() + $loop->iteration }}</td>
+                                <td class="px-4 py-3">
+                                    {{ ($promos->currentPage() - 1) * $promos->perPage() + $loop->iteration }}</td>
                                 <td class="px-4 py-2">{{ $promo->name }}</td>
                                 <td class="px-4 py-2 capitalize">{{ $promo->promoType->name }}</td>
                                 <td class="px-4 py-2 text-center font-bold">
@@ -89,16 +94,22 @@
                                     {{ \Carbon\Carbon::parse($promo->end_date)->translatedFormat('d F Y | H:i') }}
                                 </td>
                                 <td class="px-4 py-3 text-center space-x-3">
-                                    <a href="{{ route('promo.edit', $promo->id) }}" class="text-blue-500 hover:text-blue-700 transition font-medium">Edit</a>
-                                    <button type="button"
+                                    @if (Auth::guard('company')->check() == true || Auth::user()->can('update promo'))
+                                        <a href="{{ route('promo.edit', $promo->id) }}"
+                                            class="text-blue-500 hover:text-blue-700 transition font-medium">Edit</a>
+                                    @endif
+                                    @if (Auth::guard('company')->check() == true || Auth::user()->can('delete promo'))
+                                        <button type="button"
                                             onclick="confirmDeletePromo(event, '{{ route('promo.destroy', $promo->id) }}')"
                                             class="text-red-500 hover:text-red-700 transition font-medium">
                                             Delete
-                                    </button>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
-                    @endif</tbody>
+                    @endif
+                </tbody>
             </table>
         </div>
 
@@ -122,15 +133,15 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     fetch(deleteUrl, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            _method: 'DELETE'
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                _method: 'DELETE'
+                            })
                         })
-                    })
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {

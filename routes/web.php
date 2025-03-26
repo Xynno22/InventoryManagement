@@ -4,12 +4,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PromoController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckRolePermissions;
 use App\Http\Controllers\ProductCategoryController;
-use App\Http\Controllers\PromoController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
 |--------------------------------------------------------------------------
@@ -117,7 +118,14 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
 | Promo & Discount Routes
 |--------------------------------------------------------------------------
 */
-Route::resource('promo', PromoController::class);
+    Route::resource('promo', PromoController::class);
+/*
+|--------------------------------------------------------------------------
+| Stock Routes
+|--------------------------------------------------------------------------
+*/
+    Route::resource('stocks', StockController::class);
+
 });
 
 

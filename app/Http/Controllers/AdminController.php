@@ -31,12 +31,14 @@ class AdminController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'company_id' => auth('company')->id(),
         ]);
+    
+        $user->assignRole($request->role);
 
         return redirect()->route('admin.index')->with('success', 'Admin added successfully.');
     }

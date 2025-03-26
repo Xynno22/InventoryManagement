@@ -31,7 +31,13 @@
             <h2 class="text-2xl font-bold">Login as Co-Worker</h2>
             <p class="text-gray-600 text-sm mt-1">Enter your credentials to log in</p>
         </div>
-
+        <div class="flex justify-center space-x-4 mb-4">
+            
+            <a href="{{ url('/login') }}" class="text-primary font-semibold hover:underline">
+                Login as Company
+            </a>
+        </div>
+        
         <div class="mt-4">
             @if (session('success'))
                 <div class="mb-4 rounded-md bg-green-100 p-3 text-sm text-green-700">

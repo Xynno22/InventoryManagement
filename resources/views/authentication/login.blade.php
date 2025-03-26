@@ -48,9 +48,7 @@
 
         <!-- Tabs untuk memilih login sebagai Company atau Co-Worker -->
         <div class="flex justify-center space-x-4 mb-4">
-            <a href="{{ url('/login') }}" class="text-primary font-semibold hover:underline">
-                Login as Company
-            </a>
+            
             <a href="{{ url('/login-user') }}" class="text-primary font-semibold hover:underline">
                 Login as Co-Worker
             </a>
