@@ -65,7 +65,9 @@ class CompanyController extends Controller
                     'message' => 'Email belum diverifikasi. Silakan cek email Anda.',
                 ], 403);
             }
-
+            if (Auth::guard('web')->check()) {
+                Auth::guard('web')->logout();
+            }
             return redirect('/dashboard')->with('status', 'Anda Berhasil Login.');
         }
 
@@ -82,9 +84,13 @@ class CompanyController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+        if (Auth::guard('company')->check()) {
+            Auth::guard('company')->logout();
+        }
         if (Auth::guard('web')->attempt($credentials)) {
             return redirect('/dashboard')->with('status', 'Anda Berhasil Login.');
         }
+        
         
         return response()->json([
             'message' => 'Invalid email or password.',

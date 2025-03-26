@@ -13,7 +13,18 @@ class PromoController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Promo::with('promoType')->where('company_id', auth('company')->id());
+        // Jika yang login adalah company
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        }
+        // Jika yang login adalah user, ambil company_id dari user
+        elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+
+        $query = Promo::with('promoType')->where('company_id', $companyId);
 
         // Filtering by search
         if ($request->has('search') && !empty($request->search)) {
@@ -27,7 +38,7 @@ class PromoController extends Controller
 
         $promos = $query->paginate(10); // Pastikan hanya panggil paginate() di akhir.
 
-        return view('promo.index', compact('promos'));
+        return view('promo.index', ['promos' => $promos]);
     }
 
     /**
@@ -67,13 +78,24 @@ class PromoController extends Controller
             return back()->withErrors(['amount' => 'The amount field is required.'])->withInput();
         }
 
+        // Jika yang login adalah company
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        }
+        // Jika yang login adalah user, ambil company_id dari user
+        elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+
         // Simpan data promo dengan company_id dari auth('company')
         Promo::create([
             'name' => $request->name,
             'end_date' => $request->end_date,
             'promo_type_id' => $promoType->id,
             'amount' => $amount,
-            'company_id' => auth('company')->id(), // Menyimpan company_id
+            'company_id' => $companyId, // Menyimpan company_id
         ]);
 
         return redirect()->route('promo.index')->with('success', 'Promo added successfully!');
@@ -142,9 +164,20 @@ class PromoController extends Controller
      */
     public function destroy($id)
     {
+        // Jika yang login adalah company
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        }
+        // Jika yang login adalah user, ambil company_id dari user
+        elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+        
         try {
             $promo = Promo::where('id', $id)
-                ->where('company_id', auth('company')->id()) // Pastikan hanya bisa menghapus promo milik perusahaan yang login
+                ->where('company_id', $companyId) // Pastikan hanya bisa menghapus promo milik perusahaan yang login
                 ->firstOrFail();
 
             $promo->delete();

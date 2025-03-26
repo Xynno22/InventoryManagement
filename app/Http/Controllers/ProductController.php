@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Stock;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
@@ -12,7 +13,18 @@ class ProductController extends Controller
     // Menampilkan semua produk
     public function index(Request $request)
     {
-        $query = Product::where('companyID', auth('company')->id());
+        // Jika yang login adalah company
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        }
+        // Jika yang login adalah user, ambil company_id dari user
+        elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+
+        $query = Product::where('companyID', $companyId);
 
         // Filtering by search
         if ($request->has('search') && !empty($request->search)) {
@@ -60,17 +72,39 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
-        Product::create([
+        // Jika yang login adalah company
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        }
+        // Jika yang login adalah user, ambil company_id dari user
+        elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+
+        $product = Product::create([
             'name' => $request->name,
             'categoryID' => $request->categoryID,
             'detail' => $request->detail,
             'image' => $imagePath,
             'unit' => $request->unit,
-            'companyID' => auth('company')->id(),
+            'companyID' => $companyId,
             'location' => $request->location,
             'purchase_price' => $request->purchase_price,
             'sale_price' => $request->sale_price,
         ]);
+
+        if ($product) {
+            Stock::create([
+                'productID' => $product->id, // Menggunakan ID produk yang baru dibuat
+                'companyID' => $companyId,
+                'currentStock' => 0, // Stok awal diatur ke 0
+                'minimumStock' => 0, // Bisa diubah sesuai kebutuhan
+                'lastUpdated' => now(),
+                'totalOrder' => 0,
+            ]);
+        }
 
         return redirect()->route('products.index')->with('success', 'Product added successfully!');
     }
@@ -151,8 +185,19 @@ class ProductController extends Controller
     // Menghapus produk
     public function destroy($id)
     {
+        // Jika yang login adalah company
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        }
+        // Jika yang login adalah user, ambil company_id dari user
+        elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+        
         $product = Product::where('id', $id)
-                    ->where('companyID', auth('company')->id())
+                    ->where('companyID', $companyId)
                     ->firstOrFail();
 
         $product->delete();

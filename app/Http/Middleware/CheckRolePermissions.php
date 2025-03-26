@@ -32,6 +32,12 @@ class CheckRolePermissions
             'products.edit' => 'update product',
             'products.update' => 'update product',
             'products.destroy' => 'delete product',
+            'promo.index' => 'view promo',
+            'promo.create' => 'create promo',
+            'promo.store' => 'create promo',
+            'promo.edit' => 'update promo',
+            'promo.update' => 'update promo',
+            'promo.destroy' => 'delete promo',
         ];
 
         // Jika route membutuhkan izin dan user tidak punya izin, tolak akses
