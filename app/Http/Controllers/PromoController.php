@@ -174,7 +174,7 @@ class PromoController extends Controller
         } else {
             return abort(403, 'Unauthorized');
         }
-        
+
         try {
             $promo = Promo::where('id', $id)
                 ->where('company_id', $companyId) // Pastikan hanya bisa menghapus promo milik perusahaan yang login

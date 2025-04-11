@@ -6,8 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard')</title>
     <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.4/axios.min.js" integrity="sha512-2A1+/TAny5loNGk3RBbk11FwoKXYOMfAK6R7r4CpQH7Luz4pezqEGcfphoNzB7SM4dixUoJsKkBsB6kg+dNE2g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Tambahkan SweetAlert -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Neucha&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Space+Grotesk&display=swap" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100">
@@ -49,7 +56,7 @@
                     </a>
 
                     <!-- Documents Menu -->
-                    <div x-data="{ openDocs: {{ Request::is('categories*', 'products*', 'promo*', 'stock*') ? 'true' : 'false' }} }">
+                    <div x-data="{ openDocs: {{ Request::is('categories*', 'products*', 'promo*', 'stock*', 'transaction*') ? 'true' : 'false' }} }">
                         <button @click="openDocs = !openDocs"
                             class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
                             <div class="flex items-center">
@@ -131,6 +138,21 @@
                                         :class="open ? 'block' :
                                             'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
                                         Stock
+                                    </span>
+                                </a>
+                            @endif
+                            @if (Auth::guard('company')->check() == true )
+                                <a href="/transaction"
+                                    class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('transaction*') ? 'bg-gray-700' : '' }}">
+                                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="1.5"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                    </svg>
+                                    <span
+                                        :class="open ? 'block' :
+                                            'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                        Transaction
                                     </span>
                                 </a>
                             @endif

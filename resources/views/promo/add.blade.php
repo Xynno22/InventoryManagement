@@ -35,7 +35,6 @@
                         class="w-full px-4 py-2 border border-gray-600 rounded-lg shadow-sm"
                         onfocus="this.showPicker()"
                         value="{{old('end_date')}}"
-                    required
                 />
                 @error('end_date')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

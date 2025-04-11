@@ -14,26 +14,21 @@ class PromoSeeder extends Seeder
      */
     public function run(): void
     {
-
-        // Ambil ID dari promo types
-        $percentageType = PromoType::where('name', 'Percentage')->first();
-        $amountType = PromoType::where('name', 'Amount')->first();
-
-        if (!$percentageType || !$amountType) {
-            $this->command->warn("PromoType belum tersedia. Jalankan PromoTypeSeeder terlebih dahulu.");
-            return;
-        }
-
+        $fixedEndDate = Carbon::create(2030, 12, 30, 0, 0, 0);
         $promos = [
             [
-                'name' => 'Christmas Discount',
-                'promo_type_id' => $percentageType->id,
-                'amount' => 10.00,
+                'name' => 'No Promo',
+                'promo_type_id' => 2,
+                'end_date' => $fixedEndDate,
+                'company_id' => 2,
+                'amount' => 0,
             ],
             [
-                'name' => 'Ramadhan Discount',
-                'promo_type_id' => $amountType->id,
-                'amount' => 50000.00,
+                'name' => 'No Promo',
+                'promo_type_id' => 2,
+                'end_date' => $fixedEndDate,
+                'company_id' => 1,
+                'amount' => 0,
             ],
         ];
 

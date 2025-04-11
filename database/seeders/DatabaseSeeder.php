@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             PromoTypeSeeder::class, // Menjalankan seeder untuk promo types
             // PromoSeeder::class, // Menjalankan seeder untuk promo types
             PermissionSeeder::class, // Menjalankan seeder untuk akun perusahaan
+            StatusPaymentTypeSeeder::class
         ]);
     }
 }

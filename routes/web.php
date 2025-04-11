@@ -7,10 +7,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckRolePermissions;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\TransactionDetailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +29,7 @@ Route::view('/', 'layouts.welcome');
 */
 
 // Halaman Register dan Login
-Route::view('/login', 'authentication.login');
+Route::view('/login', 'authentication.login')->name('login');
 Route::view('/login-user', 'authentication.login-user');
 Route::view('/register', 'authentication.register');
 
@@ -95,7 +97,7 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
 |--------------------------------------------------------------------------
 */
     Route::view('/dashboard', 'dashboard.dashboard');
-    
+
 
 
 /*
@@ -126,11 +128,18 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
 */
     Route::resource('stocks', StockController::class);
 
+/*
+|--------------------------------------------------------------------------
+| Transaction & Transaction Details Routes
+|--------------------------------------------------------------------------
+*/
+    Route::resource('transaction', TransactionController::class);
+    Route::resource('transactionDetails', TransactionDetailController::class);
 });
 
 
 Route::middleware(['auth:company'])->group(function () {
-    
+
     Route::delete('/profile-destroy', [CompanyController::class, 'destroy'])->name('company.destroy');
 
     /*
@@ -138,11 +147,11 @@ Route::middleware(['auth:company'])->group(function () {
     | Profile Routes
     |--------------------------------------------------------------------------
     */
-    
+
         Route::get('/profile', [ProfileController::class, 'profile'])->name('profile.index');
         Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    
+
     /*
     |--------------------------------------------------------------------------
     | Admin Routes
