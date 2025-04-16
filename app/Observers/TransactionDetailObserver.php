@@ -82,6 +82,8 @@ class TransactionDetailObserver
             $stock->currentStock = $isReverse
             ? $stock->currentStock + $quantity
             : $stock->currentStock - $quantity;
+            
+            $stock->totalOrder = $stock->totalOrder + $quantity;
         }
 
         $stock->save();

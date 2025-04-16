@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\OperationalCost;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -7,10 +8,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckRolePermissions;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\OperationalCostController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\TransactionDetailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -135,6 +137,12 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
 */
     Route::resource('transaction', TransactionController::class);
     Route::resource('transactionDetails', TransactionDetailController::class);
+/*
+|--------------------------------------------------------------------------
+| Operational Cost Routes
+|--------------------------------------------------------------------------
+*/
+    Route::resource('operational', OperationalCostController::class);
 });
 
 

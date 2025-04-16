@@ -56,7 +56,7 @@
 
             </form>
 
-            @if (Auth::guard('company')->check() == true || Auth::user()->can('create promo'))
+            @if (Auth::guard('company')->check() == true || Auth::user()->can('create transaction'))
                 <a href="{{ route('transaction.create') }}"
                     class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
                     Add Transaction

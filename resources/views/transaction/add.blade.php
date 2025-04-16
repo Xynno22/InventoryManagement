@@ -24,64 +24,58 @@
 
         <form action="{{ route('transaction.store') }}" method="POST" id="transaction">
             @csrf
-            {{-- -- Customer Name--}}
+            {{-- -- Customer Name --}}
             <div class="mb-4">
                 <label for="customer_name" class="block text-gray-700 font-medium mb-2 capitalize">customer name</label>
-                <input type="text"
-                       value="{{ old('customer_name') }}"
-                       name="customer_name"
-                       placeholder='customer name'
-                       class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize"
-                       >
-                       @error('customer_name')
-                       <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                   @enderror
+                <input type="text" value="{{ old('customer_name') }}" name="customer_name" placeholder='customer name'
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize">
+                @error('customer_name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- -- Type --}}
             <div class="mb-4">
                 <label for="type" class="block text-gray-700 font-medium mb-2 capitalize">type</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="type" id="type">
+                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="type"
+                    id="type">
                     <option disabled {{ old('type') ? '' : 'selected' }}>Select the Transaction Type</option>
                     @foreach ($types as $type)
                         <option value="{{ $type->id }}" {{ old('type') == $type->id ? 'selected' : '' }}>
-                {{ $type->name }}
+                            {{ $type->name }}
                         </option>
                     @endforeach
                 </select>
                 @error('type')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- -- Payment --}}
             <div class="mb-4">
                 <label for="payment" class="block text-gray-700 font-medium mb-2 capitalize">payment</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="payment" id="payment">
+                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="payment"
+                    id="payment">
                     <option disabled {{ old('payment') ? '' : 'selected' }}>Select the Transaction Payment</option>
                     @foreach ($payments as $payment)
                         <option value="{{ $payment->id }}">
-                        {{ $payment->name }}
+                            {{ $payment->name }}
                         </option>
                     @endforeach
                 </select>
                 @error('payment')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- -- Date --}}
             <div class="mb-4">
                 <label for="date" class="block text-gray-700 font-medium mb-2 capitalize">date</label>
-                <input type="datetime-local"
-                       onfocus="this.showPicker()"
-                       value="{{ old('date') }}"
-                       name="date"
-                       placeholder="date"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize">
+                <input type="datetime-local" onfocus="this.showPicker()" value="{{ old('date') }}" name="date"
+                    placeholder="date" class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize">
                 @error('date')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
 
@@ -90,30 +84,32 @@
             {{-- -- Status --}}
             <div class="mb-4">
                 <label for="status" class="block text-gray-700 font-medium mb-2 capitalize">status</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="status" id="status">
-                    <option disabled  {{ old('status') ? '' : 'selected'}}>Select the Status</option>
+                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="status"
+                    id="status">
+                    <option disabled {{ old('status') ? '' : 'selected' }}>Select the Status</option>
                     @foreach ($statuses as $status)
-                        <option value="{{ $status->id }}"
-                                class="capitalize"
-                                {{ strtolower($transaction->status->name ?? '') == strtolower($status->name) ? 'selected' : '' }}>
-                    {{ $status->name }}
+                        <option value="{{ $status->id }}" class="capitalize"
+                            {{ strtolower($transaction->status->name ?? '') == strtolower($status->name) ? 'selected' : '' }}>
+                            {{ $status->name }}
                         </option>
                     @endforeach
                 </select>
                 @error('status')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
 
 
 
 
-            {{--Transaction Detail Edit UI--}}
+            {{-- Transaction Detail Edit UI --}}
             <h1 class="text-xl font-semibold mb-3">Transaction Detail</h1>
-            <table class="w-full bg-white shadow-md rounded-lg overflow-hidden border border-gray-200" id="transaction_details">
+            <table class="w-full bg-white shadow-md rounded-lg overflow-hidden border border-gray-200"
+                id="transaction_details">
                 <div class="flex justify-end mb-3">
-                    <a href="javascript:void(0)" class="py-2 px-4 text-white bg-black rounded-md mt-4 mr-4" id="add-transaction-btn">Add Transaction Detail</a>
+                    <a href="javascript:void(0)" class="py-2 px-4 text-white bg-black rounded-md mt-4 mr-4"
+                        id="add-transaction-btn">Add Transaction Detail</a>
                 </div>
                 <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
                     <tr>
@@ -129,43 +125,37 @@
 
                 <tbody class="text-center">
                     {{-- <tr class="border-gray-200 border-b hover:bg-gray-50 transition"> --}}
-                        {{--         <td class="px-4 py-3"></td> --}}
-                        {{--         <td class="px-4 py-3"></td> --}}
-                        {{--         <td class="px-4 py-3"></td> --}}
-                        {{--         <td class="px-4 py-3"></td> --}}
-                        {{--         <td class="px-4 py-3"></td> --}}
-                        {{----}}
-                        {{--         <td class="px-4 py-3 text-center space-x-3"></td> --}}
-                        {{----}}
-                        {{-- </tr> --}}
+                    {{--         <td class="px-4 py-3"></td> --}}
+                    {{--         <td class="px-4 py-3"></td> --}}
+                    {{--         <td class="px-4 py-3"></td> --}}
+                    {{--         <td class="px-4 py-3"></td> --}}
+                    {{--         <td class="px-4 py-3"></td> --}}
+                    {{-- --}}
+                    {{--         <td class="px-4 py-3 text-center space-x-3"></td> --}}
+                    {{-- --}}
+                    {{-- </tr> --}}
                 </tbody>
             </table>
-                @error('transaction_details_json')
+            @error('transaction_details_json')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
 
             {{-- -- Total Price --}}
             <div class="my-4">
                 <label for="total_price" class="block text-gray-700 font-medium mb-2 capitalize">total price</label>
-                <input
-
-                        value="{{old('total_price')}}"
-                        type="text"
-                        name="total_price"
-                        id="total_price"
-                        placeholder='total price'
-                        readonly
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize">
+                <input value="{{ old('total_price') }}" type="text" name="total_price" id="total_price"
+                    placeholder='total price' readonly
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize">
                 @error('total_price')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <input type="hidden" name="transaction_details_json" id="transaction_details_json" value="[]">
 
             <div class="flex justify-end space-x-2">
                 <a href="{{ route('transaction.index') }}"
-                   class="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition">
+                    class="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition">
                     Cancel
                 </a>
                 <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition">
@@ -177,18 +167,19 @@
     </div>
 
     <script>
-        document.getElementById('add-transaction-btn').addEventListener('click', function () {
+        document.getElementById('add-transaction-btn').addEventListener('click', function() {
 
             Swal.fire({
                 title: 'Add Transaction Detail',
                 html: `
         <div class="text-left">
+             <div class="text-left">
             <div class="mb-4">
                 <label for="product" class="block text-gray-700 font-medium mb-2 capitalize">Product</label>
                 <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="product">
                     <option disabled selected>Select Product</option>
                     @foreach ($products as $product)
-                        <option value="{{ $product->name }}">{{ $product->name }}</option>
+                        <option value="{{ $product->name }}" data-sale-price="{{ $product->sale_price }}">{{ $product->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -210,9 +201,9 @@
             </div>
 
             <div class="mb-4">
-                <label for="price" class="block text-gray-700 font-medium mb-2 capitalize">Price</label>
-                <input placeholder="input price" type="number" id="price" class="border border-gray-300 rounded-md p-2 w-full" required>
-            </div>
+                    <label for="price" class="block text-gray-700 font-medium mb-2 capitalize">Price</label>
+                    <input type="number" id="price" class="border border-gray-300 rounded-md p-2 w-full" readonly>
+                </div>
         </div>
         `,
                 showCancelButton: true,
@@ -231,12 +222,23 @@
                         return false;
                     }
                     console.log(promo);
-                    return { product, quantity, promo, promoName, price };
+                    return {
+                        product,
+                        quantity,
+                        promo,
+                        promoName,
+                        price
+                    };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
                     addTransactionRow(result.value);
                 }
+            });
+            document.getElementById('product').addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                const salePrice = selectedOption.dataset.salePrice; // Ambil sale_price dari data atribut
+                document.getElementById('price').value = salePrice; // Set harga ke input
             });
         });
 
@@ -421,7 +423,13 @@
                         return false;
                     }
 
-                    return { product, quantity, promo, promoName, price };
+                    return {
+                        product,
+                        quantity,
+                        promo,
+                        promoName,
+                        price
+                    };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -468,7 +476,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('#transaction').addEventListener('submit', function (e) {
+            document.querySelector('#transaction').addEventListener('submit', function(e) {
 
                 const transactionDetailsInput = document.querySelector('#transaction_details_json');
                 transactionDetailsInput.value = JSON.stringify(transactionDetails);
@@ -482,6 +490,5 @@
                 updateTotalPrice();
             }
         });
-
     </script>
 @endsection
