@@ -70,23 +70,23 @@ class Transaction extends Model
     }
 
     public static function generateVoucherCode()
-    {
-        // Generate 2 digit angka random
-        $firstPart = str_pad(rand(0, 99), 2, '0', STR_PAD_LEFT);
+{
+    // Ambil tahun dan bulan saat ini
+    $year = date('Y'); // Format YYYY
+    $month = date('m'); // Format MM
 
-        // Generate 4 digit angka random
-        $secondPart = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+    // Hitung jumlah invoice yang sudah ada di bulan ini
+    $invoiceCount = self::whereYear('created_at', $year)
+                        ->whereMonth('created_at', $month)
+                        ->count();
 
-        // Gabungkan menjadi format INV/XX/XXXX
-        $voucherCode = "INV/{$firstPart}/{$secondPart}";
+    // Nomor urutan invoice dalam bulan ini (ditambah 1)
+    $invoiceNumber = $invoiceCount + 1;
 
-        // Cek apakah kode sudah ada di database
-        // Jika sudah ada, generate ulang
-        if (self::where('voucher_code', $voucherCode)->exists()) {
-            return self::generateVoucherCode();
-        }
+    // Gabungkan menjadi format INV/XX/YYYY-MM
+    $invoiceCode = "INV/{$invoiceNumber}/{$year}/{$month}";
 
-        return $voucherCode;
-    }
+    return $invoiceCode;
+}
 
 }

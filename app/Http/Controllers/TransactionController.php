@@ -196,10 +196,7 @@ class TransactionController extends Controller
             $promos = Promo::all(); // or empty collection: collect()
         }
 
-        // Pastikan user memiliki izin
-        if (!auth()->user()->can('update transaction') && !auth()->guard('company')->check()) {
-            abort(403, 'Unauthorized action.');
-        }
+     
 
         return view('transaction.edit', compact('transaction', 'types', 'payments', 'statuses', 'promos'));
     }

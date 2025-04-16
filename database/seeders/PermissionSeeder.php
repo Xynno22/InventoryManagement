@@ -21,7 +21,17 @@ class PermissionSeeder extends Seeder
             'create promo',
             'update promo',
             'delete promo',
-            'view promo'
+            'view promo',
+            'view stock',
+            'update stock',
+            'create transaction',
+            'update transaction',
+            'delete transaction',
+            'view transaction',
+            'create operational expenses',
+            'update operational expenses',
+            'delete operational expenses',
+            'view operational expenses',
         ];
 
         foreach ($permissions as $permission) {
