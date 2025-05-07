@@ -117,7 +117,7 @@
                         <th class="px-4 py-3 text-center">Product</th>
                         <th class="px-4 py-3 text-center">Quantity</th>
                         <th class="px-4 py-3 text-center">Promo</th>
-                        <th class="px-4 py-3 text-center">Price</th>
+                        <th class="px-4 py-3 text-center">Price(Unit)</th>
                         <th class="px-4 py-3 text-center">Action</th>
                     </tr>
                 </thead>

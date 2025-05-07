@@ -68,7 +68,7 @@
                                 <td>{{ $detail->product ? $detail->product->name : 'Product Not Found' }}</td>
                                 <td class="px-4 py-3">{{ $detail->quantity }}</td>
                                 <td class="px-4 py-3">{{ $detail->promo ? $detail->promo->name : 'No Promo' }}</td>
-                                <td class="px-4 py-3">{{ number_format($detail->price, 0, ',', '.') }}</td>
+                                <td class="px-4 py-3">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -77,7 +77,7 @@
                     <tfoot class="bg-gray-100">
                         <tr>
                             <td colspan="4" class="px-4 py-3 text-right font-bold">Total Price:</td>
-                            <td class="px-4 py-2 text-center font-bold text-lg">{{ $transaction->total_price}}</td>
+                            <td class="px-4 py-2 text-center font-bold text-lg">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</td>
                         </tr>
                     </tfoot>
                 </table>
