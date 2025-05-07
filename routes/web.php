@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\StockOpname;
 use App\Models\OperationalCost;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -11,9 +12,11 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckRolePermissions;
+use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\OperationalCostController;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ReportTransactionController;
 use App\Http\Controllers\TransactionDetailController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
@@ -143,6 +146,19 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
 |--------------------------------------------------------------------------
 */
     Route::resource('operational', OperationalCostController::class);
+/*
+|--------------------------------------------------------------------------
+|Stock Opname Routes
+|--------------------------------------------------------------------------
+*/
+    Route::resource('opname', StockOpnameController::class);
+    Route::get('/getSystemStock', [StockOpnameController::class, 'getSystemStock']);
+
+    Route::get('/reports/sales', [ReportTransactionController::class, 'salesReport'])->name('reports.sales');
+    // Rute untuk meng-export PDF
+    Route::get('/export-pdf', [ReportTransactionController::class, 'exportPDF'])->name('transactions.export.pdf');
+
+
 });
 
 

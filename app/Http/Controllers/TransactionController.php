@@ -35,13 +35,10 @@ class TransactionController extends Controller
 
         // Filtering by search
         if ($request->has('search') && !empty($request->search)) {
-            $query->where('customer_name', 'like', '%' . $request->search . '%');
+            $query->where('voucher_code', 'like', '%' . $request->search . '%');
         }
 
-        // Sorting
-        if ($request->has('sort') && in_array($request->sort, ['asc', 'desc'])) {
-            $query->orderBy('customer_name', $request->sort);
-        }
+
 
         // Ambil transaksi dengan transaksi detail yang sudah dihitung grand_total
         $transactions = $query->paginate(10);

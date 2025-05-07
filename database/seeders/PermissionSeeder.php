@@ -32,6 +32,9 @@ class PermissionSeeder extends Seeder
             'update operational expenses',
             'delete operational expenses',
             'view operational expenses',
+            'create stock opname',
+            'delete stock opname',
+            'view stock opname',
         ];
 
         foreach ($permissions as $permission) {
