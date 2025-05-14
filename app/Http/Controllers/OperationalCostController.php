@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\OperationalCost;
-
+use App\Models\Payment;
 class OperationalCostController extends Controller
 {
     // Menampilkan semua data operational
@@ -40,7 +40,8 @@ class OperationalCostController extends Controller
     // Tampilkan form tambah
     public function create()
     {
-        return view('operational.add');
+        $payments = Payment::all();
+        return view('operational.add', ['payments'=>$payments]);
     }
 
     // Simpan data baru
@@ -50,6 +51,7 @@ class OperationalCostController extends Controller
             'date' => 'required|date',
             'amount' => 'required|numeric',
             'note' => 'required|string',
+            'payment_id' => 'required|exists:payments,id',
         ]);
 
         if (auth('company')->check()) {
@@ -65,6 +67,7 @@ class OperationalCostController extends Controller
             'amount' => $request->amount,
             'note' => $request->note,
             'company_id' => $companyId,
+            'payment_id' => $request->payment_id,
         ]);
 
         return redirect()->route('operational.index')->with('success', 'OperationalCost data added successfully!');
@@ -84,10 +87,11 @@ class OperationalCostController extends Controller
             'date' => 'required|date',
             'amount' => 'required|numeric',
             'note' => 'required|string',
+            'payment_id' => 'required|exists:payments,id'
         ]);
 
         $operational = OperationalCost::findOrFail($id);
-        $operational->update($request->only(['date', 'amount', 'note']));
+        $operational->update($request->only(['date', 'amount', 'note', 'payment_id']));
 
         return redirect()->route('operational.index')->with('success', 'OperationalCost data updated successfully!');
     }

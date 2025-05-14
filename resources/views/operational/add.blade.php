@@ -29,6 +29,20 @@
                 <input type="number" name="amount" id="amount" value="{{ old('amount') }}"
                     class="w-full px-4 py-2 border border-gray-600 rounded-md">
             </div>
+            
+            <div class="mb-4">
+                <label for="payment_id" class="block text-gray-700 font-medium mb-2">Payment Method</label>
+                <select name="payment_id" id="payment_id"
+                    class="w-full px-4 py-2 border border-gray-600 rounded-md">
+                    <option value="">-- Select Payment Method --</option>
+                    @foreach ($payments as $payment)
+                        <option value="{{ $payment->id }}" {{ old('payment_id') == $payment->id ? 'selected' : '' }}>
+                            {{ $payment->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            
 
             <div class="mb-4">
                 <label for="note" class="block text-gray-700 font-medium mb-2">Note</label>
