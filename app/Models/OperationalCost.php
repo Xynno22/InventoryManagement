@@ -13,10 +13,15 @@ class OperationalCost extends Model
         'date',
         'amount',
         'note',
-        'company_id'
+        'company_id',
+        'payment_id'
     ];
     public function company()
     {
         return $this->belongsTo(Company::class, 'companyID');
+    }
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
     }
 }

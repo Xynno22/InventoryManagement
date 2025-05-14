@@ -52,6 +52,7 @@
                         <th class="px-4 py-3 text-left">Date</th>
                         <th class="px-4 py-3 text-left">Amount</th>
                         <th class="px-4 py-3 text-left">Note</th>
+                        <th class="px-4 py-3 text-left">Payment</th>
                         <th class="px-4 py-3 text-center">Action</th>
                     </tr>
                 </thead>
@@ -64,6 +65,7 @@
                             <td class="px-4 py-3">{{ \Carbon\Carbon::parse($item->date)->format('d M Y') }}</td>
                             <td class="px-4 py-3">Rp {{ number_format($item->amount, 0, ',', '.') }}</td>
                             <td class="px-4 py-3">{{ $item->note }}</td>
+                            <td class="px-4 py-3">{{ $item->payment->name }}</td>
                             <td class="px-4 py-3 text-center space-x-3">
                                 @if (Auth::guard('company')->check() == true || Auth::user()->can('delete operational expenses'))
                                     <a href="{{ route('operational.edit', $item->id) }}"
