@@ -179,7 +179,11 @@
                 <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="product">
                     <option disabled selected>Select Product</option>
                     @foreach ($products as $product)
-                        <option value="{{ $product->name }}" data-sale-price="{{ $product->sale_price }}">{{ $product->name }}</option>
+                        <option value="{{ $product->name }}" 
+                                data-sale-price="{{ $product->sale_price }}" 
+                                data-purchase-price="{{ $product->purchase_price }}">
+                            {{ $product->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -215,7 +219,21 @@
                     const promoSelect = document.getElementById('promo');
                     const promo = promoSelect.value;
                     const promoName = promoSelect.options[promoSelect.selectedIndex].dataset.name;
-                    const price = document.getElementById('price').value;
+                    const type = document.getElementById('type').value;
+
+                    // Get the selected product option to retrieve the appropriate price
+                    const selectedOption = document.getElementById('product').options[document
+                        .getElementById('product').selectedIndex];
+                    let price;
+
+                    if (type === '2') {
+                        price = selectedOption.dataset.purchasePrice; // Use purchase_price
+                    } else if (type === '1') {
+                        price = selectedOption.dataset.salePrice; // Use sale_price
+                    } else {
+                        price = document.getElementById('price')
+                        .value; // Default value if type is neither 1 nor 2
+                    }
 
                     if (!product || !quantity || !promo || !price) {
                         Swal.showValidationMessage('Please fill in all fields');
@@ -237,8 +255,17 @@
             });
             document.getElementById('product').addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
-                const salePrice = selectedOption.dataset.salePrice; // Ambil sale_price dari data atribut
-                document.getElementById('price').value = salePrice; // Set harga ke input
+                const type = document.getElementById('type').value;
+                let salePrice = selectedOption.dataset.salePrice;
+                let purchasePrice = selectedOption.dataset.purchasePrice;
+
+                // Update price based on type
+                if (type === '1') {
+                    document.getElementById('price').value =
+                        salePrice; // Set purchase price if type is 1
+                } else if (type === '2') {
+                    document.getElementById('price').value = purchasePrice; // Set sale price if type is 2
+                }
             });
         });
 

@@ -95,7 +95,10 @@
                     </a>
 
                     <!-- Documents Menu -->
-                    @if (Auth::guard('company')->check() == true || Auth::user()->can('view category')|| Auth::user()->can('view product')|| Auth::user()->can('view promo'))
+                    @if (Auth::guard('company')->check() == true ||
+                            Auth::user()->can('view category') ||
+                            Auth::user()->can('view product') ||
+                            Auth::user()->can('view promo'))
                         <div x-data="{ openDocs: {{ Request::is('categories*', 'products*', 'promo*') ? 'true' : 'false' }} }">
                             <button @click="openDocs = !openDocs"
                                 class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
@@ -172,8 +175,10 @@
                             </div>
                         </div>
                     @endif
-                    @if (Auth::guard('company')->check() == true || Auth::user()->can('view stock') || Auth::user()->can('view stock opname'))
-                        <div x-data="{ openDocs: {{ Request::is('stock*','opname*') ? 'true' : 'false' }} }">
+                    @if (Auth::guard('company')->check() == true ||
+                            Auth::user()->can('view stock') ||
+                            Auth::user()->can('view stock opname'))
+                        <div x-data="{ openDocs: {{ Request::is('stock*', 'opname*') ? 'true' : 'false' }} }">
                             <button @click="openDocs = !openDocs"
                                 class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
                                 <div class="flex items-center">
@@ -225,8 +230,10 @@
                                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
                                             stroke-width="1.5" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5h6m2 2H7a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14h.01M9 17h.01M12 14h3m-3 3h3" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5h6m2 2H7a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V9a2 2 0 00-2-2z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 14h.01M9 17h.01M12 14h3m-3 3h3" />
                                         </svg>
                                         <span
                                             :class="open ? 'block' :
@@ -290,7 +297,8 @@
                                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
                                             stroke-width="1.5" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
                                         </svg>
                                         <span
                                             :class="open ? 'block' :
@@ -443,69 +451,89 @@
                         </div>
                     @endif
                     @if (Auth::guard('company')->check() == true)
-                    <div x-data="{ openDocs: {{ Request::is('reportTransaction*', 'operational*') ? 'true' : 'false' }} }">
-                        <button @click="openDocs = !openDocs"
-                            class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
-                            <div class="flex items-center">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M3 12h18M3 6h18M3 18h18" />
-                                    <path d="M12 3v18" />
-                                </svg>
-                                <span
-                                    :class="open ? 'ml-2' :
-                                        'hidden group-hover:block absolute left-16 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                    Report
-                                </span>
-                            </div>
-                            <svg class="w-4 h-4 transition-transform transform"
-                                :class="openDocs ? 'rotate-180' : 'rotate-0'" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-
-                        <!-- Submenu -->
-                        <div x-show="openDocs" class="ml-6 space-y-2">
-
-                            @if (Auth::guard('company')->check() == true)
-                                <a href="/reports/sales"
-                                    class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('reportTransaction*') ? 'bg-gray-700' : '' }}">
-                                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
-                                        stroke-width="1.5" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
+                        <div x-data="{ openDocs: {{ Request::is('salesreport*', 'cashflow*','profitloss*') ? 'true' : 'false' }} }">
+                            <button @click="openDocs = !openDocs"
+                                class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
+                                <div class="flex items-center">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                            d="M3 12h18M3 6h18M3 18h18" />
+                                        <path d="M12 3v18" />
                                     </svg>
                                     <span
-                                        :class="open ? 'block' :
-                                            'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                        Report Transaction
+                                        :class="open ? 'ml-2' :
+                                            'hidden group-hover:block absolute left-16 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                        Report
                                     </span>
-                                </a>
-                            @endif
-                        </div>
-                        <div x-show="openDocs" class="ml-6 space-y-2">
+                                </div>
+                                <svg class="w-4 h-4 transition-transform transform"
+                                    :class="openDocs ? 'rotate-180' : 'rotate-0'" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
 
-                            @if (Auth::guard('company')->check() == true || Auth::user()->can('view operational expenses'))
-                                <a href="/operational"
-                                    class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('operational*') ? 'bg-gray-700' : '' }}">
-                                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
-                                        stroke-width="1.5" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
-                                    </svg>
-                                    <span
-                                        :class="open ? 'block' :
-                                            'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                        Operational Expenses
-                                    </span>
-                                </a>
-                            @endif
+                            <!-- Submenu -->
+                            <div x-show="openDocs" class="ml-6 space-y-2">
+
+                                @if (Auth::guard('company')->check() == true)
+                                    <a href="/salesreport"
+                                        class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('salesreport*') ? 'bg-gray-700' : '' }}">
+                                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
+                                            stroke-width="1.5" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                        </svg>
+                                        <span
+                                            :class="open ? 'block' :
+                                                'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                            Report Transaction
+                                        </span>
+                                    </a>
+                                @endif
+                            </div>
+                            <div x-show="openDocs" class="ml-6 space-y-2">
+
+                                @if (Auth::guard('company')->check() == true)
+                                    <a href="/cashflow"
+                                        class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('cashflow*') ? 'bg-gray-700' : '' }}">
+                                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
+                                            stroke-width="1.5" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                        </svg>
+                                        <span
+                                            :class="open ? 'block' :
+                                                'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                            Report Cash Flow
+                                        </span>
+                                    </a>
+                                @endif
+                            </div>
+                            <div x-show="openDocs" class="ml-6 space-y-2">
+
+                                @if (Auth::guard('company')->check() == true)
+                                    <a href="/profitloss"
+                                        class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('profitloss*') ? 'bg-gray-700' : '' }}">
+                                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
+                                            stroke-width="1.5" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                        </svg>
+                                        <span
+                                            :class="open ? 'block' :
+                                                'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                            Profit Loss Statement
+                                        </span>
+                                    </a>
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
                 </nav>
             </div>
 

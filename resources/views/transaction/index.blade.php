@@ -34,7 +34,7 @@
 
             <!-- Search and Sorting -->
             <form method="GET" action="{{ route('transaction.index') }}" class="flex gap-2 flex-wrap">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search promo..."
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search Invoice..."
                     class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
 
@@ -57,9 +57,7 @@
                         <th class="px-4 py-3 text-center">Voucher Code</th>
                         <th class="px-4 py-3 text-center">Customer Name</th>
                         <th class="px-4 py-3 text-center">Type</th>
-                        <th class="px-4 py-3 text-center">Payment</th>
                         <th class="px-4 py-3 text-center">Date</th>
-                        <th class="px-4 py-3 text-center">Total Price</th>
                         <th class="px-4 py-3 text-center">Status</th>
                         <th class="px-4 py-3 text-center">Action</th>
                     </tr>
@@ -78,14 +76,9 @@
                                                  {{ $transaction->type->name ?? '-' }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-3">{{ $transaction->payment->name ?? '-' }}</td>
-
-
-
                                 <td class="px-4 py-3 text-center">
                                     {{ \Carbon\Carbon::parse($transaction->date)->format('d-M-Y') }}
                                 </td>
-                                <td>Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</td> <!-- Menampilkan grand_total -->
                                 <td class="px-4 py-3 flex items-center justify-center">
                                     <div class="py-1 flex items-center">
                                         @if ($transaction->status->name === 'Success')

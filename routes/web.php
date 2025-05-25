@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\profitlossController;
 use App\Models\StockOpname;
 use App\Models\OperationalCost;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CashflowController;
 use App\Http\Middleware\CheckRolePermissions;
 use App\Http\Controllers\StockOpnameController;
 use App\Http\Controllers\TransactionController;
@@ -144,7 +146,7 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
     Route::resource('transactionDetails', TransactionDetailController::class);
 
     Route::get('/get-transaction-detail/{voucher_code}', [TransactionController::class, 'getTransactionDetail'])
-        ->where('voucher_code', '.*'); // Mengizinkan semua karakter termasuk '/'
+        ->where('voucher_code', '.*');
 /*
 |--------------------------------------------------------------------------
 | Operational Cost Routes
@@ -159,16 +161,22 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
     Route::resource('opname', StockOpnameController::class);
     Route::get('/getSystemStock', [StockOpnameController::class, 'getSystemStock']);
 
-    Route::get('/reports/sales', [ReportTransactionController::class, 'salesReport'])->name('reports.sales');
-    // Rute untuk meng-export PDF
-    Route::get('/export-pdf', [ReportTransactionController::class, 'exportPDF'])->name('transactions.export.pdf');
+    Route::get('/salesreport', [ReportTransactionController::class, 'salesReport'])->name('reports.sales');
+    Route::get('/transactions/export-pdf', [ReportTransactionController::class, 'exportPDF'])->name('transactions.export.pdf');
+    Route::get('/transactions/export-excel', [ReportTransactionController::class, 'exportExcel'])->name('transactions.export.excel');
 
+    Route::get('/cashflow', [CashflowController::class, 'salesReport'])->name('reports.cash-flow');
+    Route::get('/cash-flow/export-pdf', [CashflowController::class, 'exportPDF'])->name('cash-flow.export.pdf');
+    Route::get('/cash-flow/export-excel', [CashflowController::class, 'exportExcel'])->name('cash-flow.export.excel');
+
+    Route::get('/profitloss', [profitlossController::class, 'salesReport'])->name('reports.profitloss');
+    Route::get('/profitloss/export-pdf', [profitlossController::class, 'exportPDF'])->name('profitloss.export.pdf');
+    Route::get('/profitloss/export-excel', [profitlossController::class, 'exportExcel'])->name('profitloss.export.excel');
 /*
 |--------------------------------------------------------------------------
 | Note Routes
 |--------------------------------------------------------------------------
 */
-
     Route::get('/note/{id}/download-pdf', [NoteController::class, 'downloadPDF'])->name('note.download-pdf');
     Route::get('/note/{note}/compare', [NoteController::class, 'compare'])->name('note.compare');
     Route::resource('note', NoteController::class);

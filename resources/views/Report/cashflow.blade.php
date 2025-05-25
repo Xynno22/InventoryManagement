@@ -1,40 +1,32 @@
 @extends('layouts.app')
 
-@section('title', 'Transaction Report')
+@section('title', 'Cash Flow Report')
 
 @section('content')
     <div class="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow mt-6">
         <!-- Filter -->
-        <div class="max-w-7xl mx-auto mt-6 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <form method="GET" action="{{ route('reports.sales') }}">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div class="max-w-7xl mx-auto mt-6 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+            <form method="GET" action="{{ route('reports.cash-flow') }}">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Start Date -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-                        <input type="date" name="start_date" value="{{ request('start_date') }}"
-                            class="form-input w-full focus:outline-none">
+                        <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                        <input type="date" id="start_date" name="start_date" value="{{ request('start_date') }}"
+                            class="form-input w-full focus:outline-none border-gray-300 rounded">
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
-                        <input type="date" name="end_date" value="{{ request('end_date') }}"
-                            class="form-input w-full focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Transaction Type</label>
-                        <select name="type_id" class="form-select w-full focus:outline-none">
-                            <option value="">All Types</option>
-                            @foreach ($types as $type)
-                                <option value="{{ $type->id }}" {{ request('type_id') == $type->id ? 'selected' : '' }}>
-                                    {{ $type->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <!-- End Date -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
-                        <select name="payment_id" class="form-select w-full focus:outline-none">
+                        <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                        <input type="date" id="end_date" name="end_date" value="{{ request('end_date') }}"
+                            class="form-input w-full focus:outline-none border-gray-300 rounded">
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div>
+                        <label for="payment_id" class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+                        <select id="payment_id" name="payment_id"
+                            class="form-select w-full focus:outline-none border-gray-300 rounded">
                             <option value="">All Payments</option>
                             @foreach ($payments as $payment)
                                 <option value="{{ $payment->id }}"
@@ -44,9 +36,12 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <!-- Status -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                        <select name="status_id" class="form-select w-full focus:outline-none">
+                        <label for="status_id" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select id="status_id" name="status_id"
+                            class="form-select w-full focus:outline-none border-gray-300 rounded">
                             <option value="">All Statuses</option>
                             @foreach ($statuses as $status)
                                 <option value="{{ $status->id }}"
@@ -56,23 +51,19 @@
                             @endforeach
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Search Customer</label>
-                        <input type="text" name="customer" value="{{ request('customer') }}" placeholder="Search Customer..."
-                            class="form-input w-full focus:outline-none">
-                    </div>
                 </div>
 
-                <div class="flex gap-2 justify-between mt-5">
-                    <!-- Filter button -->
-                    <button class="bg-indigo-600 text-white px-4 py-2 rounded">Filter</button>
+                <div class="flex justify-end mt-6">
+                    <button type="submit"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded shadow text-sm font-medium">
+                        Filter
+                    </button>
                 </div>
             </form>
         </div>
 
-        <!-- Export Button (outside the form) -->
         <div class="flex justify-end gap-5 mt-4">
-            <form action="{{ route('transactions.export.pdf') }}" method="GET">
+            <form action="{{ route('cash-flow.export.pdf') }}" method="GET">
                 <input type="hidden" name="start_date" value="{{ request('start_date') }}">
                 <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                 <input type="hidden" name="type_id" value="{{ request('type_id') }}">
@@ -83,14 +74,15 @@
                     Export PDF
                 </button>
             </form>
-            <form action="{{ route('transactions.export.excel') }}" method="GET">
+            <form action="{{ route('cash-flow.export.excel') }}" method="GET">
                 <input type="hidden" name="start_date" value="{{ request('start_date') }}">
                 <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                 <input type="hidden" name="type_id" value="{{ request('type_id') }}">
                 <input type="hidden" name="payment_id" value="{{ request('payment_id') }}">
                 <input type="hidden" name="status_id" value="{{ request('status_id') }}">
                 <input type="hidden" name="customer" value="{{ request('customer') }}">
-                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 focus:outline-none">
+                <button type="submit"
+                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 focus:outline-none">
                     Export Excel
                 </button>
             </form>
@@ -102,24 +94,26 @@
                 <thead class="bg-gray-200 text-gray-700 text-sm font-semibold">
                     <tr>
                         <th class="px-4 py-2 text-left">Date</th>
-                        <th class="px-4 py-2 text-left">Invoice</th>
-                        <th class="px-4 py-2 text-left">Customer</th>
-                        <th class="px-4 py-2 text-left">Total</th>
+                        <th class="px-4 py-2 text-left">Product Name</th>
+                        <th class="px-4 py-2 text-left">Note</th>
+                        <th class="px-4 py-2 text-left">Income</th>
+                        <th class="px-4 py-2 text-left">Outcome</th>
                         <th class="px-4 py-2 text-left">Payment</th>
                         <th class="px-4 py-2 text-left">Status</th>
                     </tr>
                 </thead>
                 <tbody class="text-sm divide-y divide-gray-100">
-                    @forelse ($transactions as $tx)
+                    @forelse ($transactions as $item)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-2">{{ \Carbon\Carbon::parse($tx->date)->format('d/m/Y H:i') }}</td>
-                            <td class="px-4 py-2 font-semibold">{{ $tx->voucher_code }}</td>
-                            <td class="px-4 py-2">{{ $tx->customer_name }}</td>
-                            <td class="px-4 py-2 text-left">Rp {{ number_format($tx->total_price, 0, ',', '.') }}</td>
-                            <td class="px-4 py-2">{{ $tx->payment->name ?? '-' }}</td>
+                            <td class="px-4 py-2">{{ $item['date'] }}</td>
+                            <td class="px-4 py-2 font-semibold">{{ $item['product_name'] }}</td>
+                            <td class="px-4 py-2">{{ $item['note'] }}</td>
+                            <td class="px-4 py-2">Rp {{ number_format($item['cash_in'], 0, ',', '.') }}</td>
+                            <td class="px-4 py-2">Rp {{ number_format($item['cash_out'], 0, ',', '.') }}</td>
+                            <td class="px-4 py-2 font-semibold">{{ $item['payment_method'] }}</td>
                             <td class="px-4 py-2">
                                 @php
-                                    $status = strtolower($tx->status->name ?? '-');
+                                    $status = strtolower($item['status'] ?? '-');
                                     $statusColor = match ($status) {
                                         'success' => 'text-green-600 font-semibold',
                                         'pending' => 'text-red-600 font-semibold',
@@ -137,5 +131,7 @@
                 </tbody>
             </table>
         </div>
+
+
     </div>
 @endsection

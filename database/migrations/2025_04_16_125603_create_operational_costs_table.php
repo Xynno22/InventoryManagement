@@ -17,6 +17,7 @@ return new class extends Migration
             $table->double('amount');
             $table->string('note');
             $table->foreignId('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreignId('payment_id')->references('id')->on('payments')->onDelete('cascade');
             $table->timestamps();
         });
     }
