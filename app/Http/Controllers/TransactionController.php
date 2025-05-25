@@ -8,6 +8,7 @@ use App\Models\Promo;
 use App\Models\Status;
 use App\Models\Transaction;
 use App\Models\Type;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,38 @@ use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
+
+    public function getTransactionDetail($voucher_code)
+    {
+        try {
+            $transaction = Transaction::where('voucher_code', $voucher_code)
+                ->with('details') // Sesuaikan dengan relasi yang ada
+                ->first();
+
+            if (!$transaction) {
+                return response()->json(['error' => 'Transaction not found'], 404);
+            }
+
+            return response()->json([
+                'note' => [
+                    'customer_name' => $transaction->customer_name,
+                    'description' => $transaction->description,
+                ],
+                'total_price' => $transaction->total_price,
+                'transaction_details' => $transaction->details->map(function($detail) {
+                    return [
+                        'product_id' => $detail->product_id,
+                        'product_name' => $detail->product->name ?? 'Unknown',
+                        'quantity' => $detail->quantity,
+                        'price' => $detail->price
+                    ];
+                })
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -193,7 +226,7 @@ class TransactionController extends Controller
             $promos = Promo::all(); // or empty collection: collect()
         }
 
-     
+
 
         return view('transaction.edit', compact('transaction', 'types', 'payments', 'statuses', 'promos'));
     }
@@ -251,6 +284,42 @@ class TransactionController extends Controller
             return response()->json(['success' => true, 'message' => 'Transaction deleted successfully!']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Failed to delete transaction: ' . $e->getMessage()], 500);
+        }
+    }
+
+
+    public function exportPdf($id)
+    {
+        try {
+            $transaction = Transaction::with(['transactionDetails.product', 'transactionDetails.promo'])
+                ->findOrFail($id);
+
+            $data = [
+                'transaction' => $transaction,
+                'generated_at' => now()->format('d/m/Y H:i:s')
+            ];
+
+            $pdf = Pdf::loadView('transaction.download-pdf', $data);
+            $pdf->setPaper('A4', 'portrait');
+
+            // Disable caching and set options for consistent rendering
+            $pdf->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isPhpEnabled' => true,
+                'defaultFont' => 'Arial',
+                'dpi' => 150,
+                'enable_remote' => false,
+                'enable_php' => false,
+            ]);
+
+            // Clean voucher code to remove invalid filename characters
+            $cleanVoucherCode = preg_replace('/[\/\\\\:*?"<>|]/', '_', $transaction->voucher_code);
+            $filename = 'transaction_' . $cleanVoucherCode . '_' . now()->format('YmdHis') . '.pdf';
+
+            return $pdf->download($filename);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to generate PDF: ' . $e->getMessage());
         }
     }
 }

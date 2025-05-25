@@ -12,9 +12,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Tambahkan SweetAlert -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -24,6 +27,30 @@
         .menu::-webkit-scrollbar {
             display: none;
             /* Untuk Chrome, Safari, dan Edge */
+        }
+
+        .select2-container--default .select2-selection--single {
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            height: 38px; /* Sesuaikan dengan tinggi select default kamu */
+            padding: 6px 12px;
+            font-size: 1rem;
+            color: #495057;
+            display: flex;
+            align-items: center;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #495057;
+            line-height: normal;
+            padding-left: 0;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px;
+            right: 10px;
+            top: 0;
         }
     </style>
 </head>
@@ -275,6 +302,72 @@
                             </div>
                         </div>
                     @endif
+
+                    @if (Auth::guard('company')->check() == true || Auth::user()->can('view note'))
+                        <div x-data="{ openDocs: {{ Request::is('note*', 'compare*') ? 'true' : 'false' }} }">
+                            <button @click="openDocs = !openDocs"
+                                class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
+                                <div class="flex items-center">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 14.25V6.75a2.25 2.25 0 0 0-2.25-2.25h-10.5A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25h9m3.75 0L15 18m0 0l3.75-3.75M15 18h6" />
+                                    </svg>
+
+                                    <span
+                                        :class="open ? 'ml-2' :
+                                            'hidden group-hover:block absolute left-16 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                        Note Management
+                                    </span>
+                                </div>
+                                <svg class="w-4 h-4 transition-transform transform"
+                                    :class="openDocs ? 'rotate-180' : 'rotate-0'" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+
+                            <!-- Submenu -->
+                            <div x-show="openDocs" class="ml-6 space-y-2">
+
+                                @if (Auth::guard('company')->check() == true || Auth::user()->can('view note'))
+                                    <a href="/note"
+                                        class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('note*') ? 'bg-gray-700' : '' }}">
+                                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
+                                            stroke-width="1.5" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                        </svg>
+                                        <span
+                                            :class="open ? 'block' :
+                                                'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                            Note
+                                        </span>
+                                    </a>
+                                @endif
+                            </div>
+                            {{-- <div x-show="openDocs" class="ml-6 space-y-2"> --}}
+                            {{----}}
+                            {{--     @if (Auth::guard('company')->check() == true || Auth::user()->can('view operational expenses')) --}}
+                            {{--         <a href="{{ route('note.compare') }}" --}}
+                            {{--             class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('compare*') ? 'bg-gray-700' : '' }}"> --}}
+                            {{--             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" --}}
+                            {{--                 stroke-width="1.5" viewBox="0 0 24 24" --}}
+                            {{--                 xmlns="http://www.w3.org/2000/svg"> --}}
+                            {{--                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" /> --}}
+                            {{--             </svg> --}}
+                            {{--             <span --}}
+                            {{--                 :class="open ? 'block' : --}}
+                            {{--                     'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'"> --}}
+                            {{--                 Note Comparison --}}
+                            {{--             </span> --}}
+                            {{--         </a> --}}
+                            {{--     @endif --}}
+                            {{-- </div> --}}
+                        </div>
+                    @endif
+
                     @if (Auth::guard('company')->check() == true)
                         <div x-data="{ openDocs: false }">
                             <button @click="openDocs = !openDocs"

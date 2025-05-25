@@ -15,7 +15,6 @@
             @method('PUT')
 
             {{--Transaction Edit--}}
-
             {{-- -- Customer Name--}}
             <div class="mb-4">
                 <label for="customer_name" class="block text-gray-700 font-medium mb-2 capitalize">customer name</label>

@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckRolePermissions;
@@ -138,8 +139,12 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
 | Transaction & Transaction Details Routes
 |--------------------------------------------------------------------------
 */
+    Route::get('/transaction/{id}/export-pdf', [TransactionController::class, 'exportPdf'])->name('transaction.export-pdf');
     Route::resource('transaction', TransactionController::class);
     Route::resource('transactionDetails', TransactionDetailController::class);
+
+    Route::get('/get-transaction-detail/{voucher_code}', [TransactionController::class, 'getTransactionDetail'])
+        ->where('voucher_code', '.*'); // Mengizinkan semua karakter termasuk '/'
 /*
 |--------------------------------------------------------------------------
 | Operational Cost Routes
@@ -158,7 +163,15 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
     // Rute untuk meng-export PDF
     Route::get('/export-pdf', [ReportTransactionController::class, 'exportPDF'])->name('transactions.export.pdf');
 
+/*
+|--------------------------------------------------------------------------
+| Note Routes
+|--------------------------------------------------------------------------
+*/
 
+    Route::get('/note/{id}/download-pdf', [NoteController::class, 'downloadPDF'])->name('note.download-pdf');
+    Route::get('/note/{note}/compare', [NoteController::class, 'compare'])->name('note.compare');
+    Route::resource('note', NoteController::class);
 });
 
 

@@ -10,9 +10,9 @@
         </div>
         <div class="flex justify-between items-center">
             <a href="{{ route('transaction.index') }}" class="text-sm text-blue-500 underline">Back to Transactions</a>
-            <button class="bg-stone-600 hover:bg-black transition-all duration-150 text-white py-1 px-4 rounded-lg">
+            <a href="{{ route('transaction.export-pdf', $transaction->id)}}" class="bg-stone-600 hover:bg-black transition-all duration-150 text-white py-1 px-4 rounded-lg">
                 Export PDF
-            </button>
+            </a>
         </div>
         {{-- <div class="flex justify-between mb-6 items-center"> --}}
             {{----}}
@@ -58,6 +58,7 @@
                             <th class="px-4 py-3 text-center">Quantity</th>
                             <th class="px-4 py-3 text-center">Promo</th>
                             <th class="px-4 py-3 text-center">Price</th>
+                            <th class="px-4 py-3 text-center">Subtotal</th>
                         </tr>
                     </thead>
 
@@ -68,7 +69,31 @@
                                 <td>{{ $detail->product ? $detail->product->name : 'Product Not Found' }}</td>
                                 <td class="px-4 py-3">{{ $detail->quantity }}</td>
                                 <td class="px-4 py-3">{{ $detail->promo ? $detail->promo->name : 'No Promo' }}</td>
-                                <td class="px-4 py-3">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</td>
+                                <td class="px-4 py-3">{{ number_format($detail->price, 0, ',', '.') }}</td>
+                                <td class="px-4 py-3">
+                                    @php
+                                        $baseAmount = $detail->quantity * $detail->price;
+                                        $subtotal = $baseAmount;
+
+                                        if ($detail->promo) {
+                                            $promoValue = $detail->promo->amount ?? 0;
+                                            $promoValueLength = strlen((string)$promoValue);
+
+                                            if ($promoValueLength == 2) {
+                                                // Percentage discount
+                                                $discount = ($baseAmount * $promoValue) / 100;
+                                                $subtotal = $baseAmount - $discount;
+                                            } elseif ($promoValueLength > 2) {
+                                                // Fixed amount discount
+                                                $subtotal = $baseAmount - $promoValue;
+                                                // Ensure subtotal doesn't go below 0
+                                                $subtotal = max(0, $subtotal);
+                                            }
+                                        }
+                                    @endphp
+                                    {{ number_format($subtotal, 0, ',', '.') }}
+                                </td>
+                                <!-- sub total = (quantity * detail->price) - promo (jika length promo = 2 berarti percentage, jika length promo >2 brarti fixed amount)-->
                             </tr>
                         @endforeach
                     </tbody>
@@ -76,8 +101,8 @@
                     <!-- Grand Total Row -->
                     <tfoot class="bg-gray-100">
                         <tr>
-                            <td colspan="4" class="px-4 py-3 text-right font-bold">Total Price:</td>
-                            <td class="px-4 py-2 text-center font-bold text-lg">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</td>
+                            <td colspan="5" class="px-4 py-3 text-right font-bold">Total Price:</td>
+                            <td class="px-4 py-2 text-center font-bold text-lg">{{ $transaction->total_price}}</td>
                         </tr>
                     </tfoot>
                 </table>

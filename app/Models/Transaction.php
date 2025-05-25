@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 class Transaction extends Model
@@ -35,6 +36,11 @@ class Transaction extends Model
     public function details()
     {
         return $this->hasMany(TransactionDetail::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
     }
 
     public function recalculateTotalPrice()
@@ -70,23 +76,13 @@ class Transaction extends Model
     }
 
     public static function generateVoucherCode()
-{
-    // Ambil tahun dan bulan saat ini
-    $year = date('Y'); // Format YYYY
-    $month = date('m'); // Format MM
+    {
+        $timestamp = date('YmdHis');
+        $random = strtoupper(Str::random(4));
 
-    // Hitung jumlah invoice yang sudah ada di bulan ini
-    $invoiceCount = self::whereYear('created_at', $year)
-                        ->whereMonth('created_at', $month)
-                        ->count();
+        $voucherCode = "INV/{$timestamp}/{$random}";
 
-    // Nomor urutan invoice dalam bulan ini (ditambah 1)
-    $invoiceNumber = $invoiceCount + 1;
-
-    // Gabungkan menjadi format INV/XX/YYYY-MM
-    $invoiceCode = "INV/{$invoiceNumber}/{$year}/{$month}";
-
-    return $invoiceCode;
-}
+        return $voucherCode;
+    }
 
 }
