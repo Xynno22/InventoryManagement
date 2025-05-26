@@ -147,7 +147,7 @@
                 <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="product">
                     <option disabled selected>Select Product</option>
                     @foreach ($products as $product)
-                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-sale-price="{{ $product->sale_price }}">{{ $product->name }}</option>
+                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-purchase-price="{{ $product->purchase_price }}">{{ $product->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -194,8 +194,8 @@
             // Event listener for product selection
             document.getElementById('product').addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
-                const salePrice = selectedOption.dataset.salePrice;
-                document.getElementById('price').value = salePrice;
+                const purchasePrice = selectedOption.dataset.purchasePrice;
+                document.getElementById('price').value = purchasePrice;
             });
         });
 
@@ -312,7 +312,7 @@
                 <label for="edit-product" class="block text-gray-700 font-medium mb-2 capitalize">Product</label>
                 <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="edit-product">
                     @foreach ($products as $product)
-                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-sale-price="{{ $product->sale_price }}" ${item.productId == {{ $product->id }} ? 'selected' : ''}>{{ $product->name }}</option>
+                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-purchase-price="{{ $product->purchase_price }}" ${item.productId == {{ $product->id }} ? 'selected' : ''}>{{ $product->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -374,8 +374,8 @@
             // Event listener for product selection in edit modal
             document.getElementById('edit-product').addEventListener('change', function() {
                 const selectedOption = this.options[this.selectedIndex];
-                const salePrice = selectedOption.dataset.salePrice;
-                document.getElementById('edit-price').value = salePrice;
+                const purchasePrice = selectedOption.dataset.purchasePrice;
+                document.getElementById('edit-price').value = purchasePrice;
             });
         }
 
