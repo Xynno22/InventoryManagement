@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\profitlossController;
 use App\Models\StockOpname;
 use App\Models\OperationalCost;
@@ -104,7 +105,11 @@ Route::middleware(['auth:company,web', CheckRolePermissions::class])->group(func
 | Dashboard Routes (Protected)
 |--------------------------------------------------------------------------
 */
-    Route::view('/dashboard', 'dashboard.dashboard');
+    Route::get('dashboard', action: [DashboardController::class, 'index']);
+    Route::get('/dashboard/top-sales', [DashboardController::class, 'getTopSales'])->name('dashboard.top-sales');
+    Route::get('/dashboard/low-stock', [DashboardController::class, 'getLowStock']);
+    Route::get('/dashboard/payment-types', [DashboardController::class, 'getPaymentTypes']);
+
 
 
 
