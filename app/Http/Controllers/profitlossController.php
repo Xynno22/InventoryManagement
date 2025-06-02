@@ -19,6 +19,14 @@ class profitlossController extends Controller
 {
     public function salesReport(Request $request)
     {
+              // Cek siapa yang login
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        } elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $paymentId = $request->input('payment_id');
@@ -35,8 +43,9 @@ class profitlossController extends Controller
 
             // Query data cash flow
             $query = TransactionDetail::with(['product', 'transaction.status', 'transaction.payment'])
-                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId) {
-                    $q->whereBetween('date', [$startDate, $endDate]);
+                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId, $companyId) {
+                    $q->where('company_id', $companyId) // ✅ Validasi company
+                    ->whereBetween('date', [$startDate, $endDate]);
 
                     if ($paymentId) {
                         $q->where('payment_id', $paymentId);
@@ -49,6 +58,7 @@ class profitlossController extends Controller
 
             // Operational Costs Query
             $operationalCosts = OperationalCost::with('payment')
+                ->where('company_id', $companyId) // ✅ Validasi company
                 ->whereBetween('date', [$startDate, $endDate]);
 
             if ($paymentId) {
@@ -108,6 +118,14 @@ class profitlossController extends Controller
 
     public function exportPDF(Request $request)
     {
+              // Cek siapa yang login
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        } elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $paymentId = $request->input('payment_id');
@@ -121,8 +139,9 @@ class profitlossController extends Controller
             $endDate = Carbon::parse($endDate)->endOfDay();
 
             $query = TransactionDetail::with(['product', 'transaction.status', 'transaction.payment'])
-                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId) {
-                    $q->whereBetween('date', [$startDate, $endDate]);
+                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId, $companyId) {
+                    $q->where('company_id', $companyId) // ✅ Validasi company
+                    ->whereBetween('date', [$startDate, $endDate]);
 
                     if ($paymentId) {
                         $q->where('payment_id', $paymentId);
@@ -134,6 +153,7 @@ class profitlossController extends Controller
                 });
 
             $operationalCosts = OperationalCost::with('payment')
+                ->where('company_id', $companyId) // ✅ Validasi company
                 ->whereBetween('date', [$startDate, $endDate]);
 
             if ($paymentId) {

@@ -56,11 +56,6 @@
                             @endforeach
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Search Customer</label>
-                        <input type="text" name="customer" value="{{ request('customer') }}" placeholder="Search Customer..."
-                            class="form-input w-full focus:outline-none">
-                    </div>
                 </div>
 
                 <div class="flex gap-2 justify-between mt-5">

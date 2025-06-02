@@ -13,7 +13,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Tambahkan SweetAlert -->
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
@@ -33,7 +35,8 @@
             background-color: #fff;
             border: 1px solid #ced4da;
             border-radius: 4px;
-            height: 38px; /* Sesuaikan dengan tinggi select default kamu */
+            height: 38px;
+            /* Sesuaikan dengan tinggi select default kamu */
             padding: 6px 12px;
             font-size: 1rem;
             color: #495057;
@@ -57,28 +60,26 @@
 
 
 <body class="bg-gray-100">
-    <div x-data="{ open: true }" class="flex h-screen">
-        <!-- Sidebar -->
-        <div :class="open ? 'w-64' : 'w-20'"
-            class="menu fixed inset-y-0 left-0 bg-gray-900 text-white transition-all duration-300 ease-in-out flex flex-col justify-between overflow-y-auto">
-
-            <!-- Menu Atas -->
-            <div>
-                <div class="flex items-center justify-between px-4 py-4">
-                    <h2 :class="open ? 'block' : 'hidden'" class="text-lg font-bold">Menu</h2>
-                    <button @click="open = !open" class="text-white text-2xl">
-                        <svg x-show="open" xmlns="http://www.w3.org/2000/svg"
-                            class="w-8 h-8 text-white hover:text-gray-400 transition" fill="none" viewBox="0 0 24 24"
+    <div x-data="{ open: true }" class="flex h-screen ">
+        <div x-data="{ openSidebar: false }" class="flex h-screen w-full">
+            <!-- Sidebar -->
+            <div x-show="openSidebar" @click.away="openSidebar = false"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 -translate-x-full"
+                x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 translate-x-0"
+                x-transition:leave-end="opacity-0 -translate-x-full"
+                class="fixed inset-y-0 left-0 w-64 bg-gray-900 text-white z-50 p-4">
+                <!-- Close Button -->
+                <div class="flex justify-end">
+                    <button @click="openSidebar = false" class="text-white hover:text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                        <svg x-show="!open" xmlns="http://www.w3.org/2000/svg"
-                            class="w-8 h-8 text-white hover:text-gray-400 transition" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
+                <!-- Add your sidebar links here -->
                 <nav class="mt-4">
                     <a href="/dashboard"
                         class="flex items-center px-4 py-3 hover:bg-gray-700 group {{ Request::is('dashboard') ? 'bg-gray-700' : '' }}">
@@ -113,7 +114,7 @@
                                     <span
                                         :class="open ? 'ml-2' :
                                             'hidden group-hover:block absolute left-16 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                        Product Management
+                                        Manage Product
                                     </span>
                                 </div>
                                 <svg class="w-4 h-4 transition-transform transform"
@@ -311,70 +312,27 @@
                         </div>
                     @endif
 
-                    @if (Auth::guard('company')->check() == true || Auth::user()->can('view note'))
-                        <div x-data="{ openDocs: {{ Request::is('note*', 'compare*') ? 'true' : 'false' }} }">
-                            <button @click="openDocs = !openDocs"
-                                class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
-                                <div class="flex items-center">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 14.25V6.75a2.25 2.25 0 0 0-2.25-2.25h-10.5A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25h9m3.75 0L15 18m0 0l3.75-3.75M15 18h6" />
-                                    </svg>
-
-                                    <span
-                                        :class="open ? 'ml-2' :
-                                            'hidden group-hover:block absolute left-16 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                        Note Management
-                                    </span>
-                                </div>
-                                <svg class="w-4 h-4 transition-transform transform"
-                                    :class="openDocs ? 'rotate-180' : 'rotate-0'" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                    @if (Auth::guard('company')->check() || Auth::user()->can('view note'))
+                        <a href="/note"
+                            class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group {{ Request::is('note*') ? 'bg-gray-700' : '' }}">
+                            <div class="flex items-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 4h16v16H4z" />
+                                    <path d="M8 2v4" />
+                                    <path d="M16 2v4" />
+                                    <line x1="8" y1="10" x2="16" y2="10" />
+                                    <line x1="8" y1="14" x2="16" y2="14" />
                                 </svg>
-                            </button>
-
-                            <!-- Submenu -->
-                            <div x-show="openDocs" class="ml-6 space-y-2">
-
-                                @if (Auth::guard('company')->check() == true || Auth::user()->can('view note'))
-                                    <a href="/note"
-                                        class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('note*') ? 'bg-gray-700' : '' }}">
-                                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
-                                            stroke-width="1.5" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                                        </svg>
-                                        <span
-                                            :class="open ? 'block' :
-                                                'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                            Note
-                                        </span>
-                                    </a>
-                                @endif
+                                <span
+                                    :class="open ? 'ml-2' :
+                                        'hidden group-hover:block absolute left-16 bg-gray-800 px-2 py-1 rounded text-sm'">
+                                    Note
+                                </span>
                             </div>
-                            {{-- <div x-show="openDocs" class="ml-6 space-y-2"> --}}
-                            {{----}}
-                            {{--     @if (Auth::guard('company')->check() == true || Auth::user()->can('view operational expenses')) --}}
-                            {{--         <a href="{{ route('note.compare') }}" --}}
-                            {{--             class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('compare*') ? 'bg-gray-700' : '' }}"> --}}
-                            {{--             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" --}}
-                            {{--                 stroke-width="1.5" viewBox="0 0 24 24" --}}
-                            {{--                 xmlns="http://www.w3.org/2000/svg"> --}}
-                            {{--                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" /> --}}
-                            {{--             </svg> --}}
-                            {{--             <span --}}
-                            {{--                 :class="open ? 'block' : --}}
-                            {{--                     'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'"> --}}
-                            {{--                 Note Comparison --}}
-                            {{--             </span> --}}
-                            {{--         </a> --}}
-                            {{--     @endif --}}
-                            {{-- </div> --}}
-                        </div>
+                        </a>
                     @endif
+
 
                     @if (Auth::guard('company')->check() == true)
                         <div x-data="{ openDocs: false }">
@@ -393,7 +351,7 @@
                                     <span
                                         :class="open ? 'ml-2' :
                                             'hidden group-hover:block absolute left-16 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                        Admin Management
+                                        Manage Admin
                                     </span>
                                 </div>
                                 <svg class="w-4 h-4 transition-transform transform"
@@ -451,15 +409,17 @@
                         </div>
                     @endif
                     @if (Auth::guard('company')->check() == true)
-                        <div x-data="{ openDocs: {{ Request::is('salesreport*', 'cashflow*','profitloss*') ? 'true' : 'false' }} }">
+                        <div x-data="{ openDocs: {{ Request::is('salesreport*', 'cashflow*', 'profitloss*') ? 'true' : 'false' }} }">
                             <button @click="openDocs = !openDocs"
                                 class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
                                 <div class="flex items-center">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M3 12h18M3 6h18M3 18h18" />
-                                        <path d="M12 3v18" />
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                        <line x1="16" y1="13" x2="8" y2="13" />
+                                        <line x1="16" y1="17" x2="8" y2="17" />
+                                        <line x1="10" y1="9" x2="8" y2="9" />
                                     </svg>
                                     <span
                                         :class="open ? 'ml-2' :
@@ -483,8 +443,11 @@
                                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
                                             stroke-width="1.5" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                            <path d="M4 4h16v16H4z" />
+                                            <line x1="8" y1="8" x2="16" y2="8" />
+                                            <line x1="8" y1="12" x2="16" y2="12" />
+                                            <line x1="8" y1="16" x2="12" y2="16" />
+                                            <path d="M18 18h.01" />
                                         </svg>
                                         <span
                                             :class="open ? 'block' :
@@ -502,8 +465,8 @@
                                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
                                             stroke-width="1.5" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                            <path d="M3 3h18v18H3V3z" />
+                                            <path d="M8 17v-6M12 17v-10M16 17v-4" />
                                         </svg>
                                         <span
                                             :class="open ? 'block' :
@@ -521,8 +484,8 @@
                                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
                                             stroke-width="1.5" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m9 14.25 6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0c1.1.128 1.907 1.077 1.907 2.185ZM9.75 9h.008v.008H9.75V9Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008V13.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                            <polyline points="3 17 9 11 13 15 21 7" />
+                                            <polyline points="3 7 3 17 13 17" />
                                         </svg>
                                         <span
                                             :class="open ? 'block' :
@@ -537,58 +500,68 @@
                 </nav>
             </div>
 
-        </div>
-        <!-- Main Content -->
-        <div :class="open ? 'ml-64' : 'ml-20'"
-            class="flex-1 flex flex-col transition-all duration-300 bg-gray-100 text-gray-900">
-            <header class="bg-gray-800 text-white shadow p-4 flex justify-between items-center">
-                <h1 class="text-xl font-bold">@yield('title')</h1>
-                <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center hover:bg-gray-700 px-4 py-2 rounded">
+            <!-- Main Content Area -->
+            <div class="flex flex-col flex-1 w-full min-h-screen">
+                <!-- Header -->
+                <header class= "w-full bg-gray-800 text-white shadow p-4 flex justify-between items-center">
+                    <!-- Hamburger Button -->
+                    <button @click="openSidebar = !openSidebar" class="p-2 rounded hover:bg-gray-700">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z">
-                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
 
-                    <div x-show="open" @click.away="open = false"
-                        class="absolute right-0 mt-2 w-48 bg-gray-800 rounded shadow-lg z-10">
-                        @if (Auth::guard('company')->check() == true)
-                            <a href="{{ route('profile.index') }}"
-                                class="block px-4 py-2 hover:bg-gray-700">Profile</a>
-                            <form id="delete-account-form" action="{{ route('company.destroy') }}" method="POST"
-                                class="relative">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" onclick="confirmDelete()"
-                                    class="block w-full text-left px-4 py-2 hover:bg-red-700">Delete Account</button>
-                            </form>
-                        @endif
+                    <h1 class="text-xl font-bold">@yield('title')</h1>
 
-                        <!-- Logout -->
-                        @if (Auth::guard('company')->check() == true)
-                            <form action="{{ route('logout') }}" method="POST" class="relative">
-                                @csrf
-                                <button type="submit"
-                                    class="block w-full text-left px-4 py-2 hover:bg-gray-700">Logout</button>
-                            </form>
-                        @endif
-                        @if (Auth::guard('web')->check() == true)
-                            <form action="{{ route('logoutUser') }}" method="POST" class="relative">
-                                @csrf
-                                <button type="submit"
-                                    class="block w-full text-left px-4 py-2 hover:bg-gray-700">Logout</button>
-                            </form>
-                        @endif
+                    <!-- User Menu -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" class="flex items-center hover:bg-gray-700 px-4 py-2 rounded">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div x-show="open" @click.away="open = false"
+                            class="absolute right-0 mt-2 w-48 bg-gray-800 rounded shadow-lg z-10">
+                            @if (Auth::guard('company')->check() == true)
+                                <a href="{{ route('profile.index') }}"
+                                    class="block px-4 py-2 hover:bg-gray-700">Profile</a>
+                                <form id="delete-account-form" action="{{ route('company.destroy') }}"
+                                    method="POST" class="relative">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" onclick="confirmDelete()"
+                                        class="block w-full text-left px-4 py-2 hover:bg-red-700">Delete
+                                        Account</button>
+                                </form>
+                            @endif
+                            @if (Auth::guard('company')->check() == true)
+                                <form action="{{ route('logout') }}" method="POST" class="relative">
+                                    @csrf
+                                    <button type="submit"
+                                        class="block w-full text-left px-4 py-2 hover:bg-gray-700">Logout</button>
+                                </form>
+                            @endif
+                            @if (Auth::guard('web')->check() == true)
+                                <form action="{{ route('logoutUser') }}" method="POST" class="relative">
+                                    @csrf
+                                    <button type="submit"
+                                        class="block w-full text-left px-4 py-2 hover:bg-gray-700">Logout</button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            </header>
+                </header>
 
-            <main class="p-6">
-                @yield('content')
-            </main>
+                <!-- Main Content -->
+                <main class="p-6 flex-1 w-full">
+                    @yield('content')
+                </main>
+            </div>
         </div>
     </div>
 

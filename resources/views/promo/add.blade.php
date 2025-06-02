@@ -24,7 +24,7 @@
 
 
             <div class="mb-6">
-                <label for="end_date" class="block text-gray-800 font-semibold mb-2">
+                <label for="end_date" class="block text-gray-800 font-semibold mb-2 ">
                     End Date
                 </label>
                 <input
@@ -32,7 +32,7 @@
                         name="end_date"
                         id="end_date"
                         placeholder="Select end date & time"
-                        class="w-full px-4 py-2 border border-gray-600 rounded-lg shadow-sm"
+                        class="w-full px-4 py-2 border border-gray-600 rounded-lg shadow-sm bg-white"
                         onfocus="this.showPicker()"
                         value="{{old('end_date')}}"
                 />
@@ -43,7 +43,7 @@
 
             <div class="mb-4">
                 <label for="type" class="block text-gray-700 font-medium mb-2">Promo Type</label>
-                <select class="w-full p-2 border border-black rounded-md" name="type" id="type">
+                <select class="w-full p-2 border border-black rounded-md bg-white" name="type" id="type">
                     <option disabled {{ old('type') ? '' : 'selected' }}>Select the Promo Type</option>
                     @foreach ($promoTypes as $promoType)
                         <option value="{{ $promoType->name }}" class="capitalize"

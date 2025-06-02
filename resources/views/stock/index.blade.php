@@ -15,7 +15,9 @@
             <form method="GET" action="{{ route('stocks.index') }}" class="flex gap-2 flex-wrap">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search stocks..."
                     class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                    Search
+                </button>
                 <div class="relative w-38">
                     <select name="sort" id="sort" onchange="this.form.submit()"
                         class="appearance-none w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium text-[15px] focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">

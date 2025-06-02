@@ -24,7 +24,7 @@
             <div class="mb-4">
                 <label for="categoryID" class="block text-sm font-medium text-gray-700">Category</label>
                 <select id="categoryID" name="categoryID"
-                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-white">
                     <option value="">Select Category</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" {{ old('categoryID') == $category->id ? 'selected' : '' }}>

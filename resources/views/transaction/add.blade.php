@@ -37,7 +37,7 @@
             {{-- -- Type --}}
             <div class="mb-4">
                 <label for="type" class="block text-gray-700 font-medium mb-2 capitalize">type</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="type"
+                <select class="w-full bg-white px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="type"
                     id="type">
                     <option disabled {{ old('type') ? '' : 'selected' }}>Select the Transaction Type</option>
                     @foreach ($types as $type)
@@ -54,7 +54,7 @@
             {{-- -- Payment --}}
             <div class="mb-4">
                 <label for="payment" class="block text-gray-700 font-medium mb-2 capitalize">payment</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="payment"
+                <select class="w-full bg-white px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="payment"
                     id="payment">
                     <option disabled {{ old('payment') ? '' : 'selected' }}>Select the Transaction Payment</option>
                     @foreach ($payments as $payment)
@@ -72,7 +72,7 @@
             <div class="mb-4">
                 <label for="date" class="block text-gray-700 font-medium mb-2 capitalize">date</label>
                 <input type="datetime-local" onfocus="this.showPicker()" value="{{ old('date') }}" name="date"
-                    placeholder="date" class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize">
+                    placeholder="date" class="w-full bg-white px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize">
                 @error('date')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -84,7 +84,7 @@
             {{-- -- Status --}}
             <div class="mb-4">
                 <label for="status" class="block text-gray-700 font-medium mb-2 capitalize">status</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="status"
+                <select class="w-full bg-white px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" name="status"
                     id="status">
                     <option disabled {{ old('status') ? '' : 'selected' }}>Select the Status</option>
                     @foreach ($statuses as $status)
@@ -105,37 +105,44 @@
 
             {{-- Transaction Detail Edit UI --}}
             <h1 class="text-xl font-semibold mb-3">Transaction Detail</h1>
-            <table class="w-full bg-white shadow-md rounded-lg overflow-hidden border border-gray-200"
-                id="transaction_details">
-                <div class="flex justify-end mb-3">
-                    <a href="javascript:void(0)" class="py-2 px-4 text-white bg-black rounded-md mt-4 mr-4"
-                        id="add-transaction-btn">Add Transaction Detail</a>
-                </div>
-                <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
-                    <tr>
-                        <th class="px-4 py-3 text-center">No</th>
-                        <th class="px-4 py-3 text-center">Product</th>
-                        <th class="px-4 py-3 text-center">Quantity</th>
-                        <th class="px-4 py-3 text-center">Promo</th>
-                        <th class="px-4 py-3 text-center">Price(Unit)</th>
-                        <th class="px-4 py-3 text-center">Action</th>
-                    </tr>
-                </thead>
 
+            <div class="flex justify-end mb-4">
+                <a href="javascript:void(0)" class="py-2 px-4 text-white bg-black rounded-md" id="add-transaction-btn">
+                    Add Transaction Detail
+                </a>
+            </div>
 
-                <tbody class="text-center">
-                    {{-- <tr class="border-gray-200 border-b hover:bg-gray-50 transition"> --}}
-                    {{--         <td class="px-4 py-3"></td> --}}
-                    {{--         <td class="px-4 py-3"></td> --}}
-                    {{--         <td class="px-4 py-3"></td> --}}
-                    {{--         <td class="px-4 py-3"></td> --}}
-                    {{--         <td class="px-4 py-3"></td> --}}
-                    {{-- --}}
-                    {{--         <td class="px-4 py-3 text-center space-x-3"></td> --}}
-                    {{-- --}}
-                    {{-- </tr> --}}
-                </tbody>
-            </table>
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white shadow-md rounded-lg border border-gray-200" id="transaction_details">
+                    <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
+                        <tr>
+                            <th class="px-4 py-3 text-center">No</th>
+                            <th class="px-4 py-3 text-center">Product</th>
+                            <th class="px-4 py-3 text-center">Quantity</th>
+                            <th class="px-4 py-3 text-center">Promo</th>
+                            <th class="px-4 py-3 text-center">Price(Unit)</th>
+                            <th class="px-4 py-3 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        {{-- Example row --}}
+                        {{-- 
+            <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
+                <td class="px-4 py-3">1</td>
+                <td class="px-4 py-3">Product A</td>
+                <td class="px-4 py-3">2</td>
+                <td class="px-4 py-3">No</td>
+                <td class="px-4 py-3">$10</td>
+                <td class="px-4 py-3 space-x-2">
+                    <button class="text-blue-600">Edit</button>
+                    <button class="text-red-600">Delete</button>
+                </td>
+            </tr>
+            --}}
+                    </tbody>
+                </table>
+            </div>
+
             @error('transaction_details_json')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
@@ -176,7 +183,7 @@
              <div class="text-left">
             <div class="mb-4">
                 <label for="product" class="block text-gray-700 font-medium mb-2 capitalize">Product</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="product">
+                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize bg-white" id="product">
                     <option disabled selected>Select Product</option>
                     @foreach ($products as $product)
                         <option value="{{ $product->name }}" 
@@ -196,7 +203,7 @@
 
             <div class="mb-4">
                 <label for="promo" class="block text-gray-700 font-medium mb-2 capitalize">Promo</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="promo">
+                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize bg-white" id="promo">
 <option value="0" data-name="No Promo" selected>No Promo</option>
                     @foreach ($promos as $promo)
                         <option value="{{ $promo->amount }}" data-name="{{ $promo->name }}">{{ $promo->name }}</option>
@@ -232,7 +239,7 @@
                         price = selectedOption.dataset.salePrice; // Use sale_price
                     } else {
                         price = document.getElementById('price')
-                        .value; // Default value if type is neither 1 nor 2
+                            .value; // Default value if type is neither 1 nor 2
                     }
 
                     if (!product || !quantity || !promo || !price) {
@@ -404,7 +411,7 @@
         <div class="text-left">
             <div class="mb-4">
                 <label for="edit-product" class="block text-gray-700 font-medium mb-2 capitalize">Product</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="edit-product">
+                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize bg-white" id="edit-product">
                     <option value="${item.product}" selected>${item.product}</option>
                     @foreach ($products as $product)
                         <option value="{{ $product->name }}">{{ $product->name }}</option>
@@ -414,12 +421,12 @@
 
             <div class="mb-4">
                 <label for="edit-quantity" class="block text-gray-700 font-medium mb-2 capitalize">Quantity</label>
-                <input type="number" id="edit-quantity" class="border border-gray-300 rounded-md p-2 w-full" value="${item.quantity}">
+                <input type="number" id="edit-quantity" class=" border border-gray-300 rounded-md p-2 w-full" value="${item.quantity}">
             </div>
 
             <div class="mb-4">
-                <label for="edit-promo" class="block text-gray-700 font-medium mb-2 capitalize">Promo</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="edit-promo">
+                <label for="edit-promo" class="block text-gray-700 font-medium mb-2 capitalize ">Promo</label>
+                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize bg-white" id="edit-promo">
                     <option value="${item.promo}" data-name="${item.promoName}" selected>${item.promoName}</option>
                     <option value="0" data-name="No Promo" ${item.promo === "0" ? 'selected' : ''}>No Promo</option>
                     @foreach ($promos as $promo)
@@ -430,7 +437,7 @@
 
             <div class="mb-4">
                 <label for="edit-price" class="block text-gray-700 font-medium mb-2 capitalize">Price</label>
-                <input type="number" id="edit-price" class="border border-gray-300 rounded-md p-2 w-full" value="${item.price}">
+                <input type="number" id="edit-price" class=" border border-gray-300 rounded-md p-2 w-full" value="${item.price}">
             </div>
         </div>
         `,
