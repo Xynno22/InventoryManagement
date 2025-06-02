@@ -312,7 +312,7 @@
                         </div>
                     @endif
 
-                    @if (Auth::guard('company')->check() || Auth::user()->can('view note'))
+                    @if (Auth::guard('company')->check() || Auth::user()->can('view operational Note'))
                         <a href="/note"
                             class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group {{ Request::is('note*') ? 'bg-gray-700' : '' }}">
                             <div class="flex items-center">
@@ -408,7 +408,7 @@
                             </div>
                         </div>
                     @endif
-                    @if (Auth::guard('company')->check() == true)
+                    @if (Auth::guard('company')->check() == true || Auth::user()->can('view Report Transaction')|| Auth::user()->can('view Profit Loss Statement')||Auth::user()->can('view Report Cash Flow'))
                         <div x-data="{ openDocs: {{ Request::is('salesreport*', 'cashflow*', 'profitloss*') ? 'true' : 'false' }} }">
                             <button @click="openDocs = !openDocs"
                                 class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
@@ -437,7 +437,7 @@
                             <!-- Submenu -->
                             <div x-show="openDocs" class="ml-6 space-y-2">
 
-                                @if (Auth::guard('company')->check() == true)
+                                @if (Auth::guard('company')->check() == true || Auth::user()->can('view Report Transaction'))
                                     <a href="/salesreport"
                                         class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('salesreport*') ? 'bg-gray-700' : '' }}">
                                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
@@ -459,7 +459,7 @@
                             </div>
                             <div x-show="openDocs" class="ml-6 space-y-2">
 
-                                @if (Auth::guard('company')->check() == true)
+                                @if (Auth::guard('company')->check() == true || Auth::user()->can('view Report Cash Flow'))
                                     <a href="/cashflow"
                                         class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('cashflow*') ? 'bg-gray-700' : '' }}">
                                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"
@@ -478,7 +478,7 @@
                             </div>
                             <div x-show="openDocs" class="ml-6 space-y-2">
 
-                                @if (Auth::guard('company')->check() == true)
+                                @if (Auth::guard('company')->check() == true || Auth::user()->can('view Profit Loss Statement'))
                                     <a href="/profitloss"
                                         class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('profitloss*') ? 'bg-gray-700' : '' }}">
                                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor"

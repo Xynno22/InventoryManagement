@@ -57,26 +57,30 @@
 
             {{-- Note Detail Edit UI --}}
             <h1 class="text-xl font-semibold mb-3">Note Detail</h1>
-            <table class="w-full bg-white shadow-md rounded-lg overflow-hidden border border-gray-200"
-                id="note_details">
-                <div class="flex justify-end mb-3">
-                    <a href="javascript:void(0)" class="py-2 px-4 text-white bg-black rounded-md mt-4 mr-4"
-                        id="add-note-btn">Add Note Detail</a>
-                </div>
-                <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
-                    <tr>
-                        <th class="px-4 py-3 text-center">No</th>
-                        <th class="px-4 py-3 text-center">Product</th>
-                        <th class="px-4 py-3 text-center">Quantity</th>
-                        <th class="px-4 py-3 text-center">Price(Unit)</th>
-                        <th class="px-4 py-3 text-center">Action</th>
-                    </tr>
-                </thead>
+            <div class="flex justify-end mb-3">
+                <a href="javascript:void(0)" class="py-2 px-4 text-white bg-black rounded-md mt-4 mr-4"
+                    id="add-note-btn">Add Note Detail</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full bg-white shadow-md rounded-lg overflow-hidden border border-gray-200"
+                    id="note_details">
 
-                <tbody class="text-center">
-                    {{-- Dynamic content will be added here --}}
-                </tbody>
-            </table>
+                    <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
+                        <tr>
+                            <th class="px-4 py-3 text-center">No</th>
+                            <th class="px-4 py-3 text-center">Product</th>
+                            <th class="px-4 py-3 text-center">Quantity</th>
+                            <th class="px-4 py-3 text-center">Price(Unit)</th>
+                            <th class="px-4 py-3 text-center">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="text-center">
+                        {{-- Dynamic content will be added here --}}
+                    </tbody>
+                </table>
+            </div>
+
             @error('note_details_json')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
@@ -115,7 +119,7 @@
         <div class="text-left">
             <div class="mb-4">
                 <label for="product" class="block text-gray-700 font-medium mb-2 capitalize">Product</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="product">
+                <select class=" bg-white w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="product">
                     <option disabled selected>Select Product</option>
                     @foreach ($products as $product)
                         <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-purchase-price="{{ $product->purchase_price }}">{{ $product->name }}</option>
@@ -270,7 +274,7 @@
         <div class="text-left">
             <div class="mb-4">
                 <label for="edit-product" class="block text-gray-700 font-medium mb-2 capitalize">Product</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="edit-product">
+                <select class="bg-white w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize" id="edit-product">
                     <option value="${item.productId}" data-name="${item.productName}" selected>${item.productName}</option>
                     @foreach ($products as $product)
                         <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-purchase-price="{{ $product->purchase_price }}">{{ $product->name }}</option>

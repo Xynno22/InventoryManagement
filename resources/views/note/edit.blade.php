@@ -10,12 +10,12 @@
             </div>
         @endif
 
-        @if(session('error'))
+        @if (session('error'))
             <script>
                 Swal.fire({
                     icon: "error",
                     title: "Error!",
-                    html: `<p class=" text-gray-700">{{ session('error')}}</p>`,
+                    html: `<p class=" text-gray-700">{{ session('error') }}</p>`,
                     confirmButtonColor: "#d33",
                     customClass: {
                         popup: "rounded-xl max-w-sm",
@@ -31,7 +31,8 @@
             {{-- Customer Name --}}
             <div class="mb-4">
                 <label for="customer_name" class="block text-gray-700 font-medium mb-2 capitalize">customer name</label>
-                <input type="text" value="{{ old('customer_name', $note->customer_name) }}" name="customer_name" placeholder='customer name'
+                <input type="text" value="{{ old('customer_name', $note->customer_name) }}" name="customer_name"
+                    placeholder='customer name'
                     class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize">
                 @error('customer_name')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -68,44 +69,51 @@
 
             {{-- Note Detail Edit UI --}}
             <h1 class="text-xl font-semibold mb-3">Note Detail</h1>
-            <table class="w-full bg-white shadow-md rounded-lg overflow-hidden border border-gray-200"
-                id="note_details">
-                <div class="flex justify-end mb-3">
-                    <a href="javascript:void(0)" class="py-2 px-4 text-white bg-black rounded-md mt-4 mr-4"
-                        id="add-note-btn">Add Note Detail</a>
-                </div>
-                <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
-                    <tr>
-                        <th class="px-4 py-3 text-center">No</th>
-                        <th class="px-4 py-3 text-center">Product</th>
-                        <th class="px-4 py-3 text-center">Quantity</th>
-                        <th class="px-4 py-3 text-center">Price(Unit)</th>
-                        <th class="px-4 py-3 text-center">Action</th>
-                    </tr>
-                </thead>
+            <div class="overflow-x-auto">
 
-                <tbody class="text-center">
-                    {{-- Existing note details will be loaded here --}}
-                    @if($note->noteDetails->count() > 0)
-                        @foreach($note->noteDetails as $index => $detail)
-                            <tr class="border-gray-200 bg-white border-b hover:bg-gray-50 transition text-center" data-row-id="{{ $detail->id }}">
-                                <td class="px-4 py-3 text-center">{{ $index + 1 }}</td>
-                                <td class="px-4 py-3 text-center">{{ $detail->product->name }}</td>
-                                <td class="px-4 py-3 text-center">{{ $detail->quantity }}</td>
-                                <td class="px-4 py-3 text-center">{{ $detail->price }}</td>
-                                <td class="px-4 py-3 text-center">
-                                    <button class="edit-btn text-blue-500 hover:underline" data-id="{{ $detail->id }}">Edit</button> |
-                                    <button class="delete-btn text-red-500 hover:underline" data-id="{{ $detail->id }}">Delete</button>
+                <table class="w-full bg-white shadow-md rounded-lg overflow-hidden border border-gray-200"
+                    id="note_details">
+                    <div class="flex justify-end mb-3">
+                        <a href="javascript:void(0)" class="py-2 px-4 text-white bg-black rounded-md mt-4 mr-4"
+                            id="add-note-btn">Add Note Detail</a>
+                    </div>
+                    <thead class="bg-gray-100 text-gray-700 uppercase text-sm">
+                        <tr>
+                            <th class="px-4 py-3 text-center">No</th>
+                            <th class="px-4 py-3 text-center">Product</th>
+                            <th class="px-4 py-3 text-center">Quantity</th>
+                            <th class="px-4 py-3 text-center">Price(Unit)</th>
+                            <th class="px-4 py-3 text-center">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="text-center">
+                        {{-- Existing note details will be loaded here --}}
+                        @if ($note->noteDetails->count() > 0)
+                            @foreach ($note->noteDetails as $index => $detail)
+                                <tr class="border-gray-200 bg-white border-b hover:bg-gray-50 transition text-center"
+                                    data-row-id="{{ $detail->id }}">
+                                    <td class="px-4 py-3 text-center">{{ $index + 1 }}</td>
+                                    <td class="px-4 py-3 text-center">{{ $detail->product->name }}</td>
+                                    <td class="px-4 py-3 text-center">{{ $detail->quantity }}</td>
+                                    <td class="px-4 py-3 text-center">{{ $detail->price }}</td>
+                                    <td class="px-4 py-3 text-center">
+                                        <button class="edit-btn text-blue-500 hover:underline"
+                                            data-id="{{ $detail->id }}">Edit</button> |
+                                        <button class="delete-btn text-red-500 hover:underline"
+                                            data-id="{{ $detail->id }}">Delete</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr id="no-data-row">
+                                <td class="px-4 py-3 text-center text-gray-500" colspan="5">Please insert the note detail
                                 </td>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr id="no-data-row">
-                            <td class="px-4 py-3 text-center text-gray-500" colspan="5">Please insert the note detail</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
             @error('note_details_json')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
@@ -113,8 +121,8 @@
             {{-- Total Price --}}
             <div class="my-4">
                 <label for="total_price" class="block text-gray-700 font-medium mb-2 capitalize">total price</label>
-                <input value="{{ old('total_price', $note->total_price) }}" type="text" name="total_price" id="total_price"
-                    placeholder='total price' readonly
+                <input value="{{ old('total_price', $note->total_price) }}" type="text" name="total_price"
+                    id="total_price" placeholder='total price' readonly
                     class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize">
                 @error('total_price')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -201,7 +209,7 @@
 
         // Initialize noteDetails with existing data
         let noteDetails = [
-            @foreach($note->noteDetails as $detail)
+            @foreach ($note->noteDetails as $detail)
                 {
                     id: {{ $detail->id }},
                     productId: {{ $detail->product_id }},

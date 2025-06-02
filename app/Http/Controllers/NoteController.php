@@ -52,8 +52,7 @@ class NoteController extends Controller
         // Filtering berdasarkan search (contohnya: title atau content)
         if ($request->has('search') && !empty($request->search)) {
             $query->where(function ($q) use ($request) {
-                $q->where('title', 'like', '%' . $request->search . '%')
-                    ->orWhere('content', 'like', '%' . $request->search . '%');
+                $q->where('description', 'like', '%' . $request->search . '%');
             });
         }
 
