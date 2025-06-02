@@ -77,7 +77,8 @@ class OperationalCostController extends Controller
     public function edit($id)
     {
         $operational = OperationalCost::findOrFail($id);
-        return view('operational.edit', compact('operational'));
+        $payments = Payment::all();
+        return view('operational.edit', compact('operational', 'payments'));
     }
 
     // Update data
