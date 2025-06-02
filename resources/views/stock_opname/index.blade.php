@@ -20,38 +20,40 @@
             </div>
         @endif
 
-        <table class="w-full table-auto">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-4 py-2">Product</th>
-                    <th class="px-4 py-2">System Stock</th>
-                    <th class="px-4 py-2">Actual Stock</th>
-                    <th class="px-4 py-2">Difference</th>
-                    <th class="px-4 py-2">Note</th>
-                    <th class="px-4 py-2">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($stockOpnames as $opname)
-                    <tr class="border-b text-center">
-                        <td class="px-4 py-2">{{ $opname->product->name }}</td>
-                        <td class="px-4 py-2">{{ $opname->system_stock }}</td>
-                        <td class="px-4 py-2">{{ $opname->actual_stock }}</td>
-                        <td class="px-4 py-2">{{ $opname->difference }}</td>
-                        <td class="px-4 py-2">{{ $opname->note }}</td>
-                        <td class="px-4 py-3  space-x-3">
-                            @if (Auth::guard('company')->check() == true || Auth::user()->can('delete stock opname'))
-                                <button type="button"
-                                    onclick="confirmDeleteOpname(event, '{{ route('opname.destroy', $opname->id) }}')"
-                                    class="text-red-500 hover:text-red-700 transition font-medium">
-                                    Delete
-                                </button>
-                            @endif
-                        </td>
+        <div class="overflow-x-auto">
+            <table class="w-full table-auto">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-4 py-2">Product</th>
+                        <th class="px-4 py-2">System Stock</th>
+                        <th class="px-4 py-2">Actual Stock</th>
+                        <th class="px-4 py-2">Difference</th>
+                        <th class="px-4 py-2">Note</th>
+                        <th class="px-4 py-2">Action</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($stockOpnames as $opname)
+                        <tr class="border-b text-center">
+                            <td class="px-4 py-2">{{ $opname->product->name }}</td>
+                            <td class="px-4 py-2">{{ $opname->system_stock }}</td>
+                            <td class="px-4 py-2">{{ $opname->actual_stock }}</td>
+                            <td class="px-4 py-2">{{ $opname->difference }}</td>
+                            <td class="px-4 py-2">{{ $opname->note }}</td>
+                            <td class="px-4 py-3 space-x-3">
+                                @if (Auth::guard('company')->check() == true || Auth::user()->can('delete stock opname'))
+                                    <button type="button"
+                                        onclick="confirmDeleteOpname(event, '{{ route('opname.destroy', $opname->id) }}')"
+                                        class="text-red-500 hover:text-red-700 transition font-medium">
+                                        Delete
+                                    </button>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         <div class="mt-4">
             {{ $stockOpnames->links() }}

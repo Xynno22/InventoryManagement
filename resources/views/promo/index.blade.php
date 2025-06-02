@@ -21,17 +21,19 @@
 @section('content')
     <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">
 
-        <div class="flex justify-between mb-6 items-center">
-
+        <div class="flex justify-between mb-6 gap-2">
             <!-- Search and Sorting -->
             <form method="GET" action="{{ route('promo.index') }}" class="flex gap-2 flex-wrap">
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search promo..."
                     class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
+                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                    Search
+                </button>
                 <div class="relative w-38">
                     <select name="sort" id="sort" onchange="this.form.submit()"
                         class="appearance-none w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium text-[15px] focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">
-                        <option value="" disabled>Sort by</option>
+                        <option value="">Sort by</option>
                         <option value="asc" {{ request('sort') == 'asc' ? 'selected' : '' }}>A - Z</option>
                         <option value="desc" {{ request('sort') == 'desc' ? 'selected' : '' }}>Z - A</option>
                     </select>
@@ -47,13 +49,14 @@
 
             </form>
 
-            @if (Auth::guard('company')->check() == true || Auth::user()->can('create promo'))
+
+            @if (Auth::guard('company')->check() == true || Auth::user()->can('create product'))
+                <!-- Add Category -->
                 <a href="{{ route('promo.create') }}"
-                    class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
-                    Add Promo
+                    class="bg-indigo-600 text-white px-5 py-2 h-[40px] flex items-center rounded-lg hover:bg-indigo-700 transition gap-2">
+                    Add
                 </a>
             @endif
-
         </div>
 
         <div class="overflow-x-auto">

@@ -17,6 +17,15 @@ class CashflowController extends Controller
 {
     public function salesReport(Request $request)
     {
+        // Cek siapa yang login
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        } elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $paymentId = $request->input('payment_id');
@@ -31,10 +40,11 @@ class CashflowController extends Controller
             $startDate = Carbon::parse($startDate);
             $endDate = Carbon::parse($endDate)->endOfDay();
 
-            // Query data cash flow
+            // 🔒 Query Transaction Details dengan validasi company_id
             $query = TransactionDetail::with(['product', 'transaction.status', 'transaction.payment'])
-                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId) {
-                    $q->whereBetween('date', [$startDate, $endDate]);
+                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId, $companyId) {
+                    $q->where('company_id', $companyId) // ✅ Validasi company
+                    ->whereBetween('date', [$startDate, $endDate]);
 
                     if ($paymentId) {
                         $q->where('payment_id', $paymentId);
@@ -45,39 +55,35 @@ class CashflowController extends Controller
                     }
                 });
 
-            // Operational Costs Query
+            // 🔒 Query Operational Costs dengan validasi company_id
             $operationalCosts = OperationalCost::with('payment')
+                ->where('company_id', $companyId) // ✅ Validasi company
                 ->whereBetween('date', [$startDate, $endDate]);
 
             if ($paymentId) {
                 $operationalCosts->where('payment_id', $paymentId);
             }
 
-            // Fetch operational costs
-            $operationalCosts = $operationalCosts->get();
-
-            // Map Operational Costs data
-            $operationalData = $operationalCosts->map(function ($op) {
+            // Map Operational Costs
+            $operationalData = $operationalCosts->get()->map(function ($op) {
                 return [
                     'date' => Carbon::parse($op->date)->format('Y-m-d'),
-                    'product_name' => '-', // Tidak ada produk di operasional
+                    'product_name' => '-', // Tidak ada produk
                     'note' => $op->note,
                     'cash_in' => 0,
-                    'cash_out' => $op->amount, // Pengeluaran
+                    'cash_out' => $op->amount,
                     'payment_method' => $op->payment->name ?? '-',
-                    'status' => 'success', // Bisa juga simpan note di sini
+                    'status' => 'success',
                 ];
             });
 
-            // Query Transaction Details
+            // Map Transaction Details
             $transactions = $query->get()->map(function ($detail) {
                 $type = $detail->transaction->type_id;
-                $note = '';
-                if ($type == 2) {
-                    $note = 'Purchase ' . $detail->product->name . ' x' . $detail->quantity;
-                } elseif ($type == 1) {
-                    $note = 'Sale ' . $detail->product->name . ' x' . $detail->quantity;
-                }
+                $note = $type == 2
+                    ? 'Purchase ' . $detail->product->name . ' x' . $detail->quantity
+                    : 'Sale ' . $detail->product->name . ' x' . $detail->quantity;
+
                 return [
                     'date' => Carbon::parse($detail->transaction->date)->format('Y-m-d'),
                     'product_name' => $detail->product->name,
@@ -90,22 +96,32 @@ class CashflowController extends Controller
             });
         }
 
-    // Gabungkan transaksi dengan biaya operasional
-    $transactions = $transactions->concat($operationalData);
+        // Gabungkan transaksi dan biaya operasional
+        $transactions = $transactions->concat($operationalData);
+        $totalCashIn = $transactions->sum('cash_in');
+        $totalCashOut = $transactions->sum('cash_out');
 
-    $totalCashIn = $transactions->sum('cash_in');
-    $totalCashOut = $transactions->sum('cash_out');
+        return view('report.cashflow', compact(
+            'transactions', 'startDate', 'endDate',
+            'payments', 'paymentId', 'statuses', 'statusId',
+            'totalCashIn', 'totalCashOut'
+        ));
+    }
 
-    return view('report.cashflow', compact(
-        'transactions', 'startDate', 'endDate',
-        'payments', 'paymentId', 'statuses', 'statusId', 'totalCashIn', 'totalCashOut'
-    ));
-}
 
 
 
     public function exportPDF(Request $request)
     {
+
+              // Cek siapa yang login
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        } elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $paymentId = $request->input('payment_id');
@@ -119,8 +135,9 @@ class CashflowController extends Controller
             $endDate = Carbon::parse($endDate)->endOfDay();
 
             $query = TransactionDetail::with(['product', 'transaction.status', 'transaction.payment'])
-                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId) {
-                    $q->whereBetween('date', [$startDate, $endDate]);
+                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId, $companyId) {
+                    $q->where('company_id', $companyId) // ✅ Validasi company
+                    ->whereBetween('date', [$startDate, $endDate]);;
 
                     if ($paymentId) {
                         $q->where('payment_id', $paymentId);
@@ -132,6 +149,7 @@ class CashflowController extends Controller
                 });
 
             $operationalCosts = OperationalCost::with('payment')
+                ->where('company_id', $companyId) // ✅ Validasi company
                 ->whereBetween('date', [$startDate, $endDate]);
 
             if ($paymentId) {
@@ -186,6 +204,14 @@ class CashflowController extends Controller
 
     public function exportExcel(Request $request)
     {
+              // Cek siapa yang login
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        } elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $paymentId = $request->input('payment_id');
@@ -199,8 +225,9 @@ class CashflowController extends Controller
             $endDate = Carbon::parse($endDate)->endOfDay();
 
             $query = TransactionDetail::with(['product', 'transaction.status', 'transaction.payment'])
-                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId) {
-                    $q->whereBetween('date', [$startDate, $endDate]);
+                ->whereHas('transaction', function ($q) use ($startDate, $endDate, $paymentId, $statusId, $companyId) {
+                    $q->where('company_id', $companyId) // ✅ Validasi company
+                    ->whereBetween('date', [$startDate, $endDate]);
 
                     if ($paymentId) {
                         $q->where('payment_id', $paymentId);
@@ -212,6 +239,7 @@ class CashflowController extends Controller
                 });
 
             $operationalCosts = OperationalCost::with('payment')
+                ->where('company_id', $companyId) // ✅ Validasi company
                 ->whereBetween('date', [$startDate, $endDate]);
 
             if ($paymentId) {

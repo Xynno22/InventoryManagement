@@ -24,6 +24,9 @@ class PermissionSeeder extends Seeder
             'view promo',
             'view stock',
             'update stock',
+            'create stock opname',
+            'delete stock opname',
+            'view stock opname',
             'create transaction',
             'update transaction',
             'delete transaction',
@@ -32,9 +35,13 @@ class PermissionSeeder extends Seeder
             'update operational expenses',
             'delete operational expenses',
             'view operational expenses',
-            'create stock opname',
-            'delete stock opname',
-            'view stock opname',
+            'create operational Note',
+            'update operational Note',
+            'delete operational Note',
+            'view operational Note',
+            'view Report Transaction',
+            'view Report Cash Flow',
+            'view Profit Loss Statement',
         ];
 
         foreach ($permissions as $permission) {

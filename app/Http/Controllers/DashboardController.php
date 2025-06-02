@@ -64,6 +64,7 @@ class DashboardController extends Controller
         $totalPending = Transaction::where('status_id', 2)->count();
 
         $promo = Promo::where('end_date', '>=', now())
+            ->where('company_id', $companyId)
             ->orderBy('end_date', 'asc')
             ->limit(5)
             ->get();

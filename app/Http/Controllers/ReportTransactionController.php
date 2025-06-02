@@ -16,6 +16,15 @@ class ReportTransactionController extends Controller
 {
     public function salesReport(Request $request)
     {
+        // Cek siapa yang login
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        } elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $typeId    = $request->input('type_id');
@@ -25,7 +34,6 @@ class ReportTransactionController extends Controller
 
         $transactions = collect();
 
-        // Get all types, payments, and statuses for filter selects
         $types = Type::all();
         $payments = Payment::all();
         $statuses = Status::all();
@@ -34,7 +42,8 @@ class ReportTransactionController extends Controller
             $startDate = Carbon::parse($startDate);
             $endDate = Carbon::parse($endDate)->endOfDay();
 
-            $query = Transaction::with(['payment', 'status']);
+            $query = Transaction::with(['payment', 'status'])
+                ->where('company_id', $companyId); // 🔒 Tambahkan validasi company
 
             if ($typeId) {
                 $query->where('type_id', $typeId);
@@ -63,8 +72,18 @@ class ReportTransactionController extends Controller
         ));
     }
 
+
     public function exportPDF(Request $request)
     {
+              // Cek siapa yang login
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        } elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $typeId    = $request->input('type_id');
@@ -73,7 +92,7 @@ class ReportTransactionController extends Controller
         $statusId  = $request->input('status_id');
     
         // Get transactions based on filters
-        $transactions = Transaction::with(['payment', 'status']);
+        $transactions = Transaction::with(['payment', 'status'])->where('company_id', $companyId);
     
         // Apply filters if they are provided
         if ($startDate && $endDate) {
@@ -119,6 +138,15 @@ class ReportTransactionController extends Controller
 
     public function exportExcel(Request $request)
     {
+              // Cek siapa yang login
+        if (auth('company')->check()) {
+            $companyId = auth('company')->id();
+        } elseif (auth('web')->check()) {
+            $companyId = auth('web')->user()->company_id;
+        } else {
+            return abort(403, 'Unauthorized');
+        }
+        
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $typeId    = $request->input('type_id');
@@ -126,7 +154,7 @@ class ReportTransactionController extends Controller
         $paymentId = $request->input('payment_id');
         $statusId  = $request->input('status_id');
 
-        $query = Transaction::with(['payment', 'status']);
+        $query = Transaction::with(['payment', 'status'])->where('company_id', $companyId);
 
         if ($startDate && $endDate) {
             $startDate = Carbon::parse($startDate);
