@@ -141,7 +141,7 @@
                                     <span
                                         :class="open ? 'block' :
                                             'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                        Product List
+                                        Product
                                     </span>
                                 </a>
                             @endif
@@ -156,7 +156,7 @@
                                     <span
                                         :class="open ? 'block' :
                                             'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                        Promo List
+                                        Promo
                                     </span>
                                 </a>
                             @endif
@@ -586,7 +586,7 @@
                                     <span
                                         :class="open ? 'block' :
                                             'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                        Product List
+                                        Product
                                     </span>
                                 </a>
                             @endif
@@ -601,7 +601,7 @@
                                     <span
                                         :class="open ? 'block' :
                                             'hidden group-hover:block absolute left-20 bg-gray-800 px-2 py-1 rounded text-sm'">
-                                        Promo List
+                                        Promo
                                     </span>
                                 </a>
                             @endif

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Promo & Discount')
+@section('title', 'Promo')
 
 @if (session('success'))
     <script>

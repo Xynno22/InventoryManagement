@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Product Categories')
+@section('title', 'Product Category')
 
 @section('content')
     <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-6">

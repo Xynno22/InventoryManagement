@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Stock Opname List')
+@section('title', 'Stock Opname')
 
 @section('content')
     <div class="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-6">
