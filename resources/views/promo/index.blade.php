@@ -94,7 +94,7 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-2 capitalize text-center">
-                                    {{ \Carbon\Carbon::parse($promo->end_date)->translatedFormat('d F Y | H:i') }}
+                                    {{ \Carbon\Carbon::parse($promo->end_date)->translatedFormat('d F Y') }}
                                 </td>
                                 <td class="px-4 py-3 text-center space-x-3">
                                     @if (Auth::guard('company')->check() == true || Auth::user()->can('update promo'))

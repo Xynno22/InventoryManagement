@@ -25,13 +25,13 @@
                     End Date
                 </label>
                 <input
-                        type="datetime-local"
+                        type="date"
                         name="end_date"
                         id="end_date"
                         placeholder="Select end date & time"
                         class="w-full px-4 py-2 border border-gray-600 rounded-lg shadow-sm"
                         onfocus="this.showPicker()"
-                        value="{{ old('end_date', \Carbon\Carbon::parse($promo->end_date)->format('Y-m-d\TH:i')) }}"
+                        value="{{ old('end_date', \Carbon\Carbon::parse($promo->end_date)->format('Y-m-d')) }}"
                         />
                 @error('end_date')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

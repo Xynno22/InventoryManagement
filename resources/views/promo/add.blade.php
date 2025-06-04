@@ -28,7 +28,7 @@
                     End Date
                 </label>
                 <input
-                        type="datetime-local"
+                        type="date"
                         name="end_date"
                         id="end_date"
                         placeholder="Select end date & time"
