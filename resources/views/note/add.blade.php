@@ -141,6 +141,9 @@
                 showCancelButton: true,
                 confirmButtonText: 'Save',
                 cancelButtonText: 'Cancel',
+                customClass: {
+                    cancelButton: 'bg-red-500 text-white hover:bg-red-600 transition',
+                },
                 preConfirm: () => {
                     const productSelect = document.getElementById('product');
                     const productId = productSelect.value;

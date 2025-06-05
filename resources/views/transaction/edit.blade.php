@@ -292,7 +292,7 @@
                 customClass: {
                     popup: "rounded-xl max-w-md",
                     confirmButton: "!py-2 !px-6 !rounded-md !bg-[#4338ca]",
-                    cancelButton: "!py-2 !px-6  !text-gray-700 !bg-white !hover:text-white !hover:bg-gray-400 !transition-all !duration-150 !ring-2 !ring-[#eaeaea] !rounded-md",
+                    cancelButton: 'bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition',
                 },
                 preConfirm: () => {
                     const quantity = +document.getElementById('quantity').value;

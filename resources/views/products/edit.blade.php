@@ -98,13 +98,13 @@
             <!-- Image Upload -->
             <div class="mb-4">
                 <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
-                
+
                 <div id="dropArea" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-indigo-500 transition">
                     <input type="file" id="image" name="image" accept="image/*" class="hidden" onchange="previewImage(event)">
-                    <img id="preview" class="mx-auto rounded-lg {{ $product->image ? '' : 'hidden' }}" 
-                    style="max-height: 150px;" 
+                    <img id="preview" class="mx-auto rounded-lg {{ $product->image ? '' : 'hidden' }}"
+                    style="max-height: 150px;"
                     src="{{ $product->image ? asset('storage/' . $product->image) : '' }}" />
-               
+
 
                     <div id="uploadText" class="{{ $product->image ? 'hidden' : '' }}">
                         <svg class="mx-auto w-10 h-10 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@
             <!-- Submit Button -->
             <div class="mt-6 flex justify-end gap-3">
                 <a href="{{ route('products.index') }}"
-                    class="bg-gray-500 text-white px-5 py-2 rounded-lg hover:bg-gray-600 transition">Cancel</a>
+                    class="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition">Cancel</a>
                 <button type="submit"
                     class="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition">Update</button>
             </div>

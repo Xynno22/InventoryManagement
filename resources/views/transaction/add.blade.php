@@ -126,7 +126,7 @@
                     </thead>
                     <tbody class="text-center">
                         {{-- Example row --}}
-                        {{-- 
+                        {{--
             <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
                 <td class="px-4 py-3">1</td>
                 <td class="px-4 py-3">Product A</td>
@@ -186,8 +186,8 @@
                 <select class="w-full px-4 py-2 border border-gray-300 rounded-md placeholder:capitalize bg-white" id="product">
                     <option disabled selected>Select Product</option>
                     @foreach ($products as $product)
-                        <option value="{{ $product->name }}" 
-                                data-sale-price="{{ $product->sale_price }}" 
+                        <option value="{{ $product->name }}"
+                                data-sale-price="{{ $product->sale_price }}"
                                 data-purchase-price="{{ $product->purchase_price }}">
                             {{ $product->name }}
                         </option>
@@ -220,6 +220,9 @@
                 showCancelButton: true,
                 confirmButtonText: 'Save',
                 cancelButtonText: 'Cancel',
+                customClass: {
+                    cancelButton: 'bg-red-500 text-white hover:bg-red-600 transition',
+                },
                 preConfirm: () => {
                     const product = document.getElementById('product').value;
                     const quantity = document.getElementById('quantity').value;

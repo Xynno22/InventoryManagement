@@ -319,7 +319,7 @@
 
 
                 @if (Auth::guard('company')->check() == true)
-                    <div x-data="{ openDocs: false }">
+                    <div x-data="{ openDocs: {{ Request::is('admin*', 'role*') ? 'true' : 'false' }} }">
                         <button @click="openDocs = !openDocs"
                             class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
                             <div class="flex items-center">
@@ -347,7 +347,7 @@
 
                         <!-- Submenu -->
                         <div x-show="openDocs" class="ml-6 space-y-2">
-                            <a href="/admin" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
+                            <a href="/admin" class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('admin*') ? 'bg-gray-700' : '' }}">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="12" cy="7" r="4" stroke="#FFFFFF" stroke-width="2"
@@ -368,7 +368,7 @@
                                     Admin
                                 </span>
                             </a>
-                            <a href="/roles" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
+                            <a href="/roles" class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('roles*') ? 'bg-gray-700' : '' }}">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="12" cy="7" r="4" stroke="#FFFFFF" stroke-width="2"
@@ -764,7 +764,7 @@
 
 
                 @if (Auth::guard('company')->check() == true)
-                    <div x-data="{ openDocs: false }">
+                    <div x-data="{ openDocs: {{ Request::is('admin*', 'role*') ? 'true' : 'false' }} }">
                         <button @click="openDocs = !openDocs"
                             class="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 group">
                             <div class="flex items-center">
@@ -792,7 +792,7 @@
 
                         <!-- Submenu -->
                         <div x-show="openDocs" class="ml-6 space-y-2">
-                            <a href="/admin" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
+                            <a href="/admin" class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('admin*') ? 'bg-gray-700' : '' }}">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="12" cy="7" r="4" stroke="#FFFFFF" stroke-width="2"
@@ -813,7 +813,7 @@
                                     Admin
                                 </span>
                             </a>
-                            <a href="/roles" class="block px-4 py-3 hover:bg-gray-700 flex items-center group">
+                            <a href="/roles" class="block px-4 py-3 hover:bg-gray-700 flex items-center group {{ Request::is('roles*') ? 'bg-gray-700' : '' }}">
                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="white" stroke-width="2"
                                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="12" cy="7" r="4" stroke="#FFFFFF" stroke-width="2"
@@ -975,11 +975,16 @@
                                     Account</button>
                             </form>
                         @endif
-                        @if (Auth::guard('company')->check() == true)
-                            <form action="{{ route('logout') }}" method="POST" class="relative">
+                        @if (Auth::guard('company')->check())
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="relative">
                                 @csrf
-                                <button type="submit"
-                                    class="block w-full text-left px-4 py-2 hover:bg-gray-700">Logout</button>
+                                <button
+                                        type="button"
+                                        onclick="confirmLogout()"
+                                        class="block w-full text-left px-4 py-2 hover:bg-gray-700"
+                                        >
+                                        Logout
+                                </button>
                             </form>
                         @endif
                         @if (Auth::guard('web')->check() == true)
@@ -1016,6 +1021,23 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('delete-account-form').submit();
+                }
+            });
+        }
+
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You will be logged out from your session.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
                 }
             });
         }

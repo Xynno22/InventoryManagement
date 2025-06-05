@@ -50,12 +50,15 @@ class NoteController extends Controller
         $query = Note::where('company_id', $companyId);
 
         // Filtering berdasarkan search (contohnya: title atau content)
-        if ($request->has('search') && !empty($request->search)) {
-            $query->where(function ($q) use ($request) {
-                $q->where('description', 'like', '%' . $request->search . '%');
-            });
-        }
+        // if ($request->has('search') && !empty($request->search)) {
+        //     $query->where(function ($q) use ($request) {
+        //         $q->where('description', 'like', '%' . $request->search . '%');
+        //     });
+        // }
 
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('description', 'like', '%' . $request->search . '%');
+        }
         // Ambil catatan yang sudah difilter dan dipaginasi
         $notes = $query->paginate(10);
 

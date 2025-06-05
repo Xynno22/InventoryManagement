@@ -8,7 +8,7 @@
             <h1 class="text-2xl font-bold text-gray-800">Compare Note with Transaction</h1>
             <div class="flex space-x-2">
                 <a href="{{ route('note.index') }}"
-                   class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+                   class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition">
                     Back to List
                 </a>
             </div>
