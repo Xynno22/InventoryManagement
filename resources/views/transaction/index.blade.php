@@ -205,7 +205,7 @@
                     @endif
                 </p>
                 @if (request('search'))
-                    <a href="{{ route('categories.index') }}"
+                    <a href="{{ route('transaction.index') }}"
                         class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition mr-3">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
