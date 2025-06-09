@@ -61,15 +61,15 @@ class CompanyController extends Controller
             // Cek apakah email sudah diverifikasi
             if (!$user->email_verified_at) {
                 Auth::guard('company')->logout(); // Logout jika belum diverifikasi
-                return redirect()->back()->with('error', 'Email belum diverifikasi. Silakan cek email Anda.');
+                return redirect()->back()->with('error', 'Email not verified. Please check your email to complete the verification.');
             }
             if (Auth::guard('web')->check()) {
                 Auth::guard('web')->logout();
             }
-            return redirect('/dashboard')->with('status', 'Anda Berhasil Login.');
+            return redirect('/dashboard')->with('status', 'Successfully Login.');
         }
 
-        return redirect()->back()->with('error', 'Email atau password salah.');
+        return redirect()->back()->with('error', 'Invalid Email or Password.');
     }
     public function loginUser(Request $request)
     {
@@ -84,13 +84,11 @@ class CompanyController extends Controller
             Auth::guard('company')->logout();
         }
         if (Auth::guard('web')->attempt($credentials)) {
-            return redirect('/dashboard')->with('status', 'Anda Berhasil Login.');
+            return redirect('/dashboard')->with('status', 'Successfully Login.');
         }
         
         
-        return response()->json([
-            'message' => 'Invalid email or password.',
-        ], 401);
+        return redirect()->back()->with('error', 'Invalid Email or Password.');
     }
     public function destroy(Request $request)
     {
@@ -99,7 +97,7 @@ class CompanyController extends Controller
 
         $company->delete(); 
 
-        return redirect('/login')->with('status', 'Akun perusahaan berhasil dihapus.');
+        return redirect('/login')->with('status', 'Company account has been successfully deleted.');
     }
     public function showLinkRequestForm()
     {
