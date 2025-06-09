@@ -61,9 +61,7 @@ class CompanyController extends Controller
             // Cek apakah email sudah diverifikasi
             if (!$user->email_verified_at) {
                 Auth::guard('company')->logout(); // Logout jika belum diverifikasi
-                return response()->json([
-                    'message' => 'Email belum diverifikasi. Silakan cek email Anda.',
-                ], 403);
+                return redirect()->back()->with('error', 'Email belum diverifikasi. Silakan cek email Anda.');
             }
             if (Auth::guard('web')->check()) {
                 Auth::guard('web')->logout();
@@ -71,9 +69,7 @@ class CompanyController extends Controller
             return redirect('/dashboard')->with('status', 'Anda Berhasil Login.');
         }
 
-        return response()->json([
-            'message' => 'Invalid email or password.',
-        ], 401);
+        return redirect()->back()->with('error', 'Email atau password salah.');
     }
     public function loginUser(Request $request)
     {
