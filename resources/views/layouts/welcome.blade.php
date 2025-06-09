@@ -21,7 +21,7 @@
     <section class="flex flex-col items-center justify-center text-center py-20 px-6">
         <h1 class="text-4xl font-extrabold text-gray-900">Welcome to StockSense</h1>
         <p class="mt-4 text-lg text-gray-700">Your all-in-one solution for inventory and finance management.</p>
-        <a href="{{ url('/register') }}"
+        <a href="{{ url('/login') }}"
             class="mt-6 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-500 transition">
             Get Started
         </a>
@@ -47,7 +47,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-6">
+    <footer class="bg-gray-800 bottom-0 w-full text-white text-center py-6">
         <p>&copy; 2025 StockSense - All Rights Reserved</p>
     </footer>
 

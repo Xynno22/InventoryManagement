@@ -39,11 +39,11 @@
                 <span class="text-gray-900 font-medium">{{ $company->email }}</span>
             </div>
             <div class="flex justify-between items-center border-b pb-2">
-                <span class="text-gray-600">Telepon:</span>
+                <span class="text-gray-600">Phone Number:</span>
                 <span class="text-gray-900 font-medium">{{ $company->phone ?? '-' }}</span>
             </div>
             <div class="flex justify-between items-center">
-                <span class="text-gray-600">Alamat:</span>
+                <span class="text-gray-600">Address:</span>
                 <span class="text-gray-900 font-medium">{{ $company->address ?? '-' }}</span>
             </div>
         </div>
