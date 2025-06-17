@@ -183,7 +183,7 @@
             event.preventDefault();
             Swal.fire({
                 title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this category!",
+                text: "Once deleted, you will not be able to recover this promo!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",

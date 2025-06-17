@@ -7,7 +7,7 @@ use App\Models\NoteDetail;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -146,7 +146,7 @@ class NoteController extends Controller
             DB::commit();
 
             return redirect()->route('note.index')
-                ->with('success', 'create');
+                ->with('success', 'added');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -157,16 +157,19 @@ class NoteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Note $note)
+    public function show($id)
     {
-        $companyId = $this->getCompanyId();
+        $companyId = auth('company')->check()
+        ? auth('company')->id()
+        : (auth('web')->check()
+            ? auth('web')->user()->company_id
+            : abort(403, 'Unauthorized'));
 
-        // Check if note belongs to the company
-        if ($note->company_id !== $companyId) {
-            abort(403, 'Unauthorized access to this note.');
-        }
-
-        $note->load(['noteDetails.product']);
+        // Ambil note milik company yang sesuai
+        $note = Note::where('id', $id)
+            ->where('company_id', $companyId)
+            ->with(['noteDetails.product'])
+            ->firstOrFail();
 
         return view('note.show', compact('note'));
     }

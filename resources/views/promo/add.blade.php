@@ -43,7 +43,7 @@
 
             <div class="mb-4">
                 <label for="type" class="block text-gray-700 font-medium mb-2">Promo Type</label>
-                <select class="w-full p-2 border border-black rounded-md bg-white" name="type" id="type">
+                <select class="w-full p-2 border border-black rounded-md bg-white capitalize" name="type" id="type">
                     <option disabled {{ old('type') ? '' : 'selected' }}>Select the Promo Type</option>
                     @foreach ($promoTypes as $promoType)
                         <option value="{{ $promoType->name }}" class="capitalize"

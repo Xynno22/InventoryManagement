@@ -72,9 +72,9 @@
                             <td class="px-4 py-3">{{ $item->payment->name }}</td>
                             <td class="px-4 py-3 text-center space-x-3">
                                 <div class="flex gap-3 items-center justify-center">
-                                @if (Auth::guard('company')->check() == true || Auth::user()->can('delete operational expenses'))
+                                @if (Auth::guard('company')->check() == true || Auth::user()->can('edit operational expenses'))
                                     <a href="{{ route('operational.edit', $item->id) }}"
-                                        class="text-blue-500 hover:text-blue-700 transition font-medium">
+                                        class="text-blue-500 hover:text-blue-700 transition">
 
                                             <div class="relative group">
                                                 <div class="p-[5px] bg-blue-50 rounded-md">
@@ -86,7 +86,7 @@
                                                     </svg>
                                                 </div>
                                                 <span
-                                                    class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                                                    class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-[99999] w-max max-w-[110px] text-center leading-tight">
                                                     Edit Operational Expense
                                                 </span>
                                             </div>
@@ -105,7 +105,7 @@
                                                 </svg>
                                         </button>
                                         <span
-                                            class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                                            class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-[99999] w-max max-w-[120px] text-center leading-tight">
                                             Delete Operational Expense
                                         </span>
                                     </div>

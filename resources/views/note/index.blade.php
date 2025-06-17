@@ -113,7 +113,7 @@
                                                     </svg>
                                                 </div>
                                                 <span
-                                                    class="capitalize absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                                                    class="max-w-[75px] absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-[99999] w-max  text-center leading-tight capitalize">
                                                     View note Detail
                                                 </span>
                                             </div>
@@ -162,7 +162,7 @@
                                     @if (Auth::guard('company')->check() == true || Auth::user()->can('delete operational Note'))
                                         <div class="relative group">
                                             <button
-                                                onclick="confirmDeletePromo(event, '{{ route('note.destroy', $note->id) }}')"
+                                                onclick="confirmDeleteNote(event, '{{ route('note.destroy', $note->id) }}')"
                                                 class="p-[5px] bg-red-50 rounded-md">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                     stroke-width="1.5" stroke="currentColor" class="size-5 text-red-500">
@@ -229,25 +229,16 @@
     </div>
 
     <script>
-        function confirmDeletePromo(event, deleteUrl) {
+        function confirmDeleteNote(event, deleteUrl) {
             event.preventDefault();
             Swal.fire({
-                title: `<h1 class="font-bold">Are you sure want to<br/> delete this note?</h1>`,
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this note!",
+                icon: "warning",
                 showCancelButton: true,
-                imageUrl: "https://cdn-icons-png.flaticon.com/512/3300/3300464.png",
-                imageWidth: 100,
-                imageHeight: 100,
-                html: `<p class="text-[.98rem]">You won't be able to revert this!</p>`,
-                imageAlt: "Delete Icon",
                 confirmButtonColor: "#d33",
-                reverseButtons: 'true',
-                customClass: {
-                    popup: "rounded-2xl max-w-md",
-                    cancelButton: "bg-white text-gray-700 hover:text-white hover:bg-gray-400 transition-all duration-150 ring-2 ring-[#eaeaea] py-[4px] px-12",
-                    confirmButton: "py-[6px] px-12 rounded-md",
-                    title: "p-0",
-                },
-                confirmButtonText: "Delete"
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, Delete it!"
             }).then((result) => {
                 if (result.isConfirmed) {
                     fetch(deleteUrl, {
@@ -292,10 +283,10 @@
                     toast: true,
                     position: "bottom-end",
                     icon: "success",
-                    title: "Note deleted Successfully!",
+                    title: "Note deleted successfully!",
                     html: `<p class="text-[14px] font-light">Your note has been deleted</p>`,
                     showConfirmButton: false,
-                    width: "400px", // Atur lebar toast
+                    width: "auto",
                     timer: 2000,
                     timerProgressBar: true,
                     customClass: {

@@ -53,7 +53,7 @@
                                                 </svg>
                                         </button>
                                         <span
-                                            class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1">
+                                            class="max-w-[85px] absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block bg-gray-800 text-white text-xs rounded-md px-2 py-1 z-[99999] w-max  text-center leading-tight">
                                             Delete Stock Opname
                                         </span>
                                     </div>
